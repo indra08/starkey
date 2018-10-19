@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorPrimary">#f0f633</color>
+    <color name="colorPrimaryDark">#e2e830</color>
+    <color name="colorAccent">#837c85</color>
+    <color name="colorAbuAbu">#8e8b84</color>
+    <color name="colorAbuBiru">#617e8c</color>
+    <color name="colorAbu">#97b0bc</color>
+    <color name="colorPutih">#fff</color>
+    <color name="colorHitam">#000</color>
+    <color name="colorPrimaryBlue">#83e5e0</color>
+    <color name="colorPrimaryDarkBlue">#7bd6cd</color>
+    <color name="colorPrimaryGreen">#8beba5</color>
+    <color name="colorPrimaryDarkGreen">#89e9a3</color>
+    <color name="colorMerah">#f44437</color>
+    <color name="background_activity">#f1f2f4</color>
+    <color name="empty">#9E9E9E</color>
+    <color name="merkColor">#2196F3</color>
+    <color name="colorHijau">#43A047</color>
+</resources>

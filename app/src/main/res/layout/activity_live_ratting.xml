@@ -1,0 +1,358 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="id.starkey.pelanggan.LiveRatting.LiveRattingActivity">
+
+    <android.support.design.widget.AppBarLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:theme="@style/AppTheme.AppBarOverlay"
+        android:id="@+id/appBarLiveRatting">
+
+        <android.support.v7.widget.Toolbar
+            android:id="@+id/toolbarLiveRatting"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            android:background="?attr/colorPrimary"
+            app:popupTheme="@style/AppTheme.AppBarOverlay" >
+
+        </android.support.v7.widget.Toolbar>
+
+    </android.support.design.widget.AppBarLayout>
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/appBarLiveRatting">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="200dp"
+            android:padding="8dp">
+
+            <android.support.v7.widget.CardView
+                android:id="@+id/cvDetailTopLiveRatting"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:padding="8dp">
+
+                    <TextView
+                        android:id="@+id/labelDetailTrxLive"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Detail Transaksi"/>
+
+                    <TextView
+                        android:id="@+id/tvStatusTrxLive"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="status"
+                        android:layout_alignParentRight="true"
+                        android:textColor="@color/colorHijau"/>
+
+                    <View
+                        android:id="@+id/linesatuLive"
+                        android:layout_width = "match_parent"
+                        android:layout_height="1dp"
+                        android:background="@color/empty"
+                        android:layout_below="@+id/labelDetailTrxLive"/>
+
+                    <com.mikhaellopez.circularimageview.CircularImageView
+                        android:id="@+id/imageViewMitra"
+                        android:layout_width="80dp"
+                        android:layout_height="80dp"
+                        android:layout_below="@+id/labelDetailTrxLive"
+                        android:layout_marginTop="10dp"/>
+
+                    <TextView
+                        android:id="@+id/labelNoTrxLive"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Order No:"
+                        android:layout_below="@+id/labelDetailTrxLive"
+                        android:layout_toRightOf="@+id/imageViewMitra"
+                        android:layout_marginLeft="8dp"
+                        android:layout_marginTop="5dp"/>
+
+                    <TextView
+                        android:id="@+id/tvNoTrxLive"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_toRightOf="@+id/labelNoTrxLive"
+                        android:layout_marginTop="5dp"
+                        android:layout_below="@+id/labelDetailTrxLive"
+                        android:layout_marginLeft="8dp"
+                        android:text="000"/>
+
+                    <TextView
+                        android:id="@+id/tvNamaMitraLive"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="nama mitra"
+                        android:layout_below="@+id/labelNoTrxLive"
+                        android:layout_toRightOf="@id/imageViewMitra"
+                        android:layout_marginLeft="8dp"
+                        android:textSize="18dp"
+                        android:textStyle="bold"/>
+
+                    <View
+                        android:id="@+id/lineduaLive"
+                        android:layout_width = "match_parent"
+                        android:layout_height="1dp"
+                        android:background="@color/empty"
+                        android:layout_below="@+id/imageViewMitra"
+                        android:layout_marginTop="8dp"/>
+
+                    <ImageView
+                        android:id="@+id/imageViewAlamatLive"
+                        android:layout_width="50dp"
+                        android:layout_height="50dp"
+                        android:src="@drawable/ic_action_marker"
+                        android:layout_below="@+id/lineduaLive"
+                        android:layout_marginTop="8dp"/>
+
+                    <TextView
+                        android:id="@+id/tvAlamatLive"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="Location"
+                        android:maxLines="3"
+                        android:lines="3"
+                        android:ellipsize="end"
+                        android:layout_below="@+id/lineduaLive"
+                        android:layout_toRightOf="@+id/imageViewAlamatLive"
+                        android:layout_marginLeft="8dp"
+                        android:layout_marginTop="8dp"/>
+
+
+                </RelativeLayout>
+            </android.support.v7.widget.CardView>
+
+            <android.support.v7.widget.CardView
+                android:id="@+id/cvDetailOrderLive"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/cvDetailTopLiveRatting"
+                android:layout_marginTop="16dp">
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:padding="8dp">
+
+                    <TextView
+                        android:id="@+id/labelDetailOrderLive"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Detail Order"/>
+
+                    <TextView
+                        android:id="@+id/tvTglLive"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentRight="true"
+                        android:text="tanggal"/>
+
+                    <View
+                        android:id="@+id/linetigaLive"
+                        android:layout_width = "match_parent"
+                        android:layout_height="1dp"
+                        android:background="@color/empty"
+                        android:layout_below="@+id/labelDetailOrderLive"/>
+
+                    <TextView
+                        android:id="@+id/tvNamaItemLive"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="namaitem"
+                        android:layout_below="@+id/linetigaLive"
+                        android:layout_marginTop="16dp"
+                        android:layout_centerHorizontal="true"
+                        android:textStyle="bold"
+                        android:textSize="18dp"/>
+
+                    <TextView
+                        android:id="@+id/labelBiayaLive"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Biaya"
+                        android:layout_below="@+id/tvNamaItemLive"/>
+
+                    <TextView
+                        android:id="@+id/tvBiayaLive"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Rp. 0"
+                        android:layout_alignParentRight="true"
+                        android:layout_below="@+id/tvNamaItemLive"/>
+
+                    <TextView
+                        android:id="@+id/labelJasaLive"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Jasa"
+                        android:layout_below="@+id/labelBiayaLive"/>
+
+                    <TextView
+                        android:id="@+id/tvJasaLive"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Rp. 0"
+                        android:layout_below="@+id/tvBiayaLive"
+                        android:layout_alignParentRight="true"/>
+
+                    <TextView
+                        android:id="@+id/labelBiayaLainLive"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Biaya Lain"
+                        android:layout_below="@+id/labelJasaLive"/>
+
+                    <TextView
+                        android:id="@+id/tvBiayaLainLive"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Rp. 0"
+                        android:layout_alignParentRight="true"
+                        android:layout_below="@+id/tvJasaLive"/>
+
+                    <TextView
+                        android:id="@+id/labelGrandTotalLive"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Grand Total"
+                        android:layout_below="@+id/labelBiayaLainLive"
+                        android:textColor="@color/colorMerah"
+                        android:textStyle="bold"/>
+
+                    <TextView
+                        android:id="@+id/tvGrandTotalLive"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Rp. 0"
+                        android:layout_alignParentRight="true"
+                        android:layout_below="@+id/tvBiayaLainLive"
+                        android:textStyle="bold"
+                        android:textColor="@color/colorMerah"/>
+
+                    <TextView
+                        android:id="@+id/labelTipsLive"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Tips"
+                        android:layout_below="@+id/labelGrandTotalLive"
+                        android:layout_marginTop="8dp"/>
+
+                    <TextView
+                        android:id="@+id/tvTipsLive"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Rp. 0"
+                        android:layout_alignParentRight="true"
+                        android:layout_below="@+id/tvGrandTotalLive"
+                        android:layout_marginTop="8dp"/>
+
+
+
+                </RelativeLayout>
+            </android.support.v7.widget.CardView>
+
+
+            <android.support.v7.widget.CardView
+                android:id="@+id/cardViewRatingLive"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/cvDetailOrderLive"
+                android:layout_marginTop="16dp"
+                android:visibility="visible">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:padding="16dp">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center_vertical"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Rating"
+                            android:textSize="17sp" />
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:gravity="center"
+                            android:orientation="horizontal">
+
+                            <me.zhanghai.android.materialratingbar.MaterialRatingBar
+                                android:id="@+id/ratingbarLive"
+                                style="@style/Widget.MaterialRatingBar.RatingBar"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center"
+                                app:mrb_fillBackgroundStars="true"/>
+
+                        </LinearLayout>
+                    </LinearLayout>
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="6dp"
+                        android:layout_marginTop="10dp"
+                        android:text="Komentar"
+                        android:textSize="17sp" />
+
+                    <EditText
+                        android:id="@+id/editTextKomentarLive"
+                        style="@style/style_textarea"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:hint="Awesome"></EditText>
+                </LinearLayout>
+            </android.support.v7.widget.CardView>
+
+            <Button
+                android:id="@+id/btnLiveRatting"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Simpan"
+                android:layout_below="@+id/cardViewRatingLive"
+                android:background="@drawable/background_button"/>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        </RelativeLayout>
+
+
+    </ScrollView>
+
+
+
+</RelativeLayout>

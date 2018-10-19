@@ -1,0 +1,148 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="id.starkey.pelanggan.Stempel.IsiDetailStempel.IsiDetailStempelActivity">
+
+    <android.support.design.widget.AppBarLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:theme="@style/AppTheme.AppBarOverlay"
+        android:id="@+id/appBarIsiDetailStempel">
+
+        <android.support.v7.widget.Toolbar
+            android:id="@+id/toolbarIsiDetailStempel"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            android:background="?attr/colorPrimary"
+            app:popupTheme="@style/AppTheme.AppBarOverlay" >
+
+        </android.support.v7.widget.Toolbar>
+
+    </android.support.design.widget.AppBarLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/appBarIsiDetailStempel">
+
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="#fafafa"
+                android:orientation="vertical">
+
+                <android.support.v7.widget.CardView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="10dp">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical">
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:orientation="vertical"
+                            android:padding="16dp">
+
+                            <TextView
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:text="Stempel"
+                                android:textColor="@color/colorHitam"
+                                android:textStyle="bold" />
+
+                            <com.jaredrummler.materialspinner.MaterialSpinner
+                                android:id="@+id/spinnerJenisStempel"
+                                android:layout_width="match_parent"
+                                android:layout_height="40dp"
+                                app:ms_background_color="@color/background_activity"/>
+
+                            <ImageView
+                                android:id="@+id/imgViewStempel"
+                                android:layout_width="100dp"
+                                android:layout_height="100dp"
+                                android:layout_gravity="center"
+                                android:src="@drawable/default_stamp"/>
+
+                            <TextView
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="10dp"
+                                android:text="Ukuran"
+                                android:textColor="@color/colorHitam"
+                                android:textStyle="bold" />
+
+                            <com.jaredrummler.materialspinner.MaterialSpinner
+                                android:id="@+id/spinnerUkuranStempel"
+                                android:layout_width="match_parent"
+                                android:layout_height="40dp"
+                                app:ms_background_color="@color/background_activity"/>
+
+                            <Spinner
+                                style="@style/style_spinner"
+                                android:layout_width="match_parent"
+                                android:visibility="gone"
+                                android:background="@drawable/background_spinner"></Spinner>
+
+                            <TextView
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="10dp"
+                                android:text="Jumlah"
+                                android:textColor="@color/colorHitam"
+                                android:textStyle="bold" />
+
+                            <me.himanshusoni.quantityview.QuantityView
+                                android:id="@+id/qvStempel"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                app:qv_quantity="1"
+                                android:layout_marginTop="10dp"
+                                app:qv_addButtonBackground="@color/colorPrimaryDark"
+                                app:qv_removeButtonBackground="@color/colorPrimaryDark"/>
+
+                            <TextView
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="10dp"
+                                android:text="Keterangan"
+                                android:textColor="@color/colorHitam"
+                                android:textStyle="bold" />
+
+                            <EditText
+                                android:id="@+id/etKeteranganStemp"
+                                style="@style/style_textarea"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"></EditText>
+                        </LinearLayout>
+                    </LinearLayout>
+                </android.support.v7.widget.CardView>
+
+
+            </LinearLayout>
+
+
+        </ScrollView>
+        <Button
+            android:id="@+id/btnLanjutkanStempel"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/background_button"
+            android:text="Lanjutkan"
+            android:textStyle="bold"
+            android:layout_alignParentBottom="true"/>
+
+
+    </RelativeLayout>
+
+</RelativeLayout>

@@ -1,0 +1,260 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="4dp">
+
+        <TextView
+            android:id="@+id/titleDialogDetail"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="DETAIL ORDERAN"
+            android:layout_centerHorizontal="true"
+            android:textColor="@color/colorHitam"
+            android:textStyle="bold"/>
+
+
+        <!-- START CV TOP -->
+        <android.support.v7.widget.CardView
+            android:id="@+id/cvTopKunci"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/titleDialogDetail"
+            android:layout_marginTop="8dp">
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:padding="8dp">
+
+                <TextView
+                    android:id="@+id/labelTransaksiKunciDialog"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Transaksi:"
+                    android:textStyle="bold"/>
+
+                <TextView
+                    android:id="@+id/labelLayananKunciDialog"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="layanan"
+                    android:layout_toRightOf="@+id/labelTransaksiKunciDialog"
+                    android:layout_marginLeft="4dp"
+                    android:textStyle="bold"/>
+
+                <View
+                    android:id="@+id/line"
+                    android:layout_width="fill_parent"
+                    android:layout_height="2dp"
+                    android:background="@color/empty"
+                    android:layout_below="@+id/labelTransaksiKunciDialog"
+                    android:layout_marginTop="8dp" />
+
+                <TextView
+                    android:id="@+id/labelJenisNama"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Duplikat Kunci Gerbang"
+                    android:layout_below="@+id/line"
+                    android:layout_marginTop="8dp"/>
+
+                <TextView
+                    android:id="@+id/labelQty"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="1"
+                    android:layout_below="@+id/line"
+                    android:layout_marginTop="8dp"
+                    android:layout_alignParentRight="true"/>
+
+                <TextView
+                    android:id="@+id/labelKeteranganReview"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/labelJenisNama"
+                    android:text="xKeterangan"
+                    android:layout_marginTop="8dp"
+                    android:lines="3"
+                    android:maxLines="3"/>
+
+            </RelativeLayout>
+        </android.support.v7.widget.CardView>
+        <!-- END CV TOP -->
+
+
+        <!-- START CV MID -->
+        <android.support.v7.widget.CardView
+            android:id="@+id/cvMidKunci"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/cvTopKunci"
+            android:layout_marginTop="8dp">
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:padding="8dp">
+
+                <TextView
+                    android:id="@+id/labelAlamatAntarKunci"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Alamat Antar"
+                    android:textStyle="bold"/>
+
+                <View
+                    android:id="@+id/lineMid"
+                    android:layout_width="fill_parent"
+                    android:layout_height="2dp"
+                    android:background="@color/empty"
+                    android:layout_below="@+id/labelAlamatAntarKunci"
+                    android:layout_marginTop="8dp"/>
+
+                <ImageView
+                    android:id="@+id/icAlamat"
+                    android:layout_width="60dp"
+                    android:layout_height="60dp"
+                    android:padding="15dp"
+                    android:src="@drawable/ic_action_marker"
+                    android:layout_below="@+id/lineMid"/>
+
+                <TextView
+                    android:id="@+id/tvAlamatAntarDetail"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="CV EZATECH"
+                    android:maxLines="3"
+                    android:lines="3"
+                    android:textColor="@color/colorHitam"
+                    android:layout_below="@+id/lineMid"
+                    android:layout_toRightOf="@+id/icAlamat"
+                    android:layout_marginTop="8dp"/>
+
+
+            </RelativeLayout>
+        </android.support.v7.widget.CardView>
+        <!-- END CV MID -->
+
+        <!-- START CV BOTTOM -->
+        <android.support.v7.widget.CardView
+            android:id="@+id/cvBottomKunci"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/cvMidKunci"
+            android:layout_marginTop="8dp">
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:padding="8dp">
+
+                <TextView
+                    android:id="@+id/labelDetailKunci"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Detail"
+                    android:textSize="16dp"
+                    android:textStyle="bold"/>
+
+                <View
+                    android:id="@+id/lineBottom"
+                    android:layout_width="fill_parent"
+                    android:layout_height="2dp"
+                    android:background="@color/empty"
+                    android:layout_below="@+id/labelDetailKunci"
+                    android:layout_marginTop="8dp"/>
+
+                <TextView
+                    android:id="@+id/labelBiaya"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Biaya"
+                    android:layout_below="@+id/lineBottom"
+                    android:layout_marginTop="8dp"/>
+
+                <TextView
+                    android:id="@+id/labelBiayaValue"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Rp. 0"
+                    android:layout_alignParentRight="true"
+                    android:layout_below="@+id/lineBottom"
+                    android:layout_marginTop="8dp"/>
+
+                <TextView
+                    android:id="@+id/labelJasa"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Jasa"
+                    android:layout_below="@+id/labelBiaya"/>
+
+                <TextView
+                    android:id="@+id/tvJasa"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Rp. 0"
+                    android:layout_alignParentRight="true"
+                    android:layout_below="@+id/labelBiayaValue"/>
+
+                <TextView
+                    android:id="@+id/labelBiayaLain"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Biaya Lain"
+                    android:layout_below="@+id/labelJasa"/>
+
+                <TextView
+                    android:id="@+id/tvBiayaLain"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:layout_below="@+id/tvJasa"
+                    android:text="Rp. 0"/>
+
+                <TextView
+                    android:id="@+id/labelGrandTotal"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Grand Total"
+                    android:textColor="@color/colorMerah"
+                    android:textStyle="bold"
+                    android:layout_below="@+id/labelBiayaLain"
+                    android:layout_marginTop="18dp"/>
+
+                <TextView
+                    android:id="@+id/tvGrandTotal"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Rp. 0"
+                    android:layout_alignParentRight="true"
+                    android:layout_below="@+id/tvBiayaLain"
+                    android:textStyle="bold"
+                    android:textColor="@color/colorMerah"
+                    android:layout_marginTop="18dp"/>
+
+                <TextView
+                    android:id="@+id/labelTips"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Tips"
+                    android:layout_below="@+id/labelGrandTotal"/>
+
+                <TextView
+                    android:id="@+id/tvTips"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Rp. 0"
+                    android:layout_alignParentRight="true"
+                    android:layout_below="@+id/tvGrandTotal"/>
+
+            </RelativeLayout>
+        </android.support.v7.widget.CardView>
+        <!-- END CV BOTTOM -->
+
+    </RelativeLayout>
+
+</RelativeLayout>

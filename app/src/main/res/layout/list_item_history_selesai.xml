@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:padding="2dp">
+
+    <android.support.v7.widget.CardView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:padding="8dp">
+
+            <ImageView
+                android:id="@+id/imageViewSelesai"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:layout_centerVertical="true"/>
+
+            <TextView
+                android:id="@+id/tvNamaLayananKunciSelesai"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_toRightOf="@+id/imageViewSelesai"
+                android:layout_marginLeft="10dp"
+                android:text="namalayanankunci"/>
+
+            <TextView
+                android:id="@+id/tvNamaKunciSelesai"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="nama kunci"
+                android:layout_toRightOf="@+id/imageViewSelesai"
+                android:layout_marginLeft="10dp"
+                android:layout_below="@+id/tvNamaLayananKunciSelesai"/>
+
+            <TextView
+                android:id="@+id/tvBiayaSelesai"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="biaya"
+                android:layout_toRightOf="@+id/imageViewSelesai"
+                android:layout_marginLeft="10dp"
+                android:layout_below="@+id/tvNamaKunciSelesai"/>
+
+            <TextView
+                android:id="@+id/tvTampungIsRated"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:visibility="invisible"/>
+
+            <TextView
+                android:id="@+id/tvTampungTrxId"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:visibility="invisible"
+                android:layout_alignParentRight="true"
+                android:textStyle="bold"/>
+
+            <TextView
+                android:id="@+id/tvTanggalSelesai"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:textStyle="bold"/>
+
+            <TextView
+                android:id="@+id/tvTampungStatusCode"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:visibility="invisible"/>
+
+            <TextView
+                android:id="@+id/tvTampungStatus"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:visibility="invisible"/>
+
+        </RelativeLayout>
+    </android.support.v7.widget.CardView>
+
+</RelativeLayout>

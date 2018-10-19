@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <android.support.v7.widget.CardView
+        android:id="@+id/cardViewKunciMotor"
+        android:layout_width="175dp"
+        android:layout_height="wrap_content"
+        android:layout_margin="2dp">
+
+        <RelativeLayout
+            android:id="@+id/rlayoutkuncimotor"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:padding="6dp">
+
+            <ImageView
+                android:id="@+id/imgKunciMotor"
+                android:layout_width="100dp"
+                android:layout_height="100dp"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="4dp"
+                android:scaleType="centerCrop"/>
+
+            <TextView
+                android:id="@+id/tvTypeKunciMotor"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Type Kunci"
+                android:layout_below="@+id/imgKunciMotor"
+                android:layout_centerHorizontal="true"
+                android:maxLines="3"/>
+
+            <TextView
+                android:id="@+id/tvMerkKunciMotor"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Merk"
+                android:layout_below="@+id/tvTypeKunciMotor"
+                android:layout_centerHorizontal="true"
+                android:textColor="@color/merkColor"
+                android:visibility="invisible"/>
+
+            <TextView
+                android:id="@+id/tvHargaKunciMotor"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Rp."
+                android:layout_below="@+id/tvMerkKunciMotor"
+                android:layout_centerHorizontal="true"
+                android:textColor="@color/colorMerah"/>
+
+            <TextView
+                android:id="@+id/tvTampungGbrKunciMotor"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:visibility="invisible"/>
+
+
+
+        </RelativeLayout>
+    </android.support.v7.widget.CardView>
+
+</RelativeLayout>

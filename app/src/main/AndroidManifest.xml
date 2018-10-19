@@ -1,0 +1,197 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="id.starkey.pelanggan">
+
+    <uses-feature
+        android:glEsVersion="0x00020000"
+        android:required="true" />
+
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="com.google.android.providers.gsf.permission.READ_GSERVICES" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.CAMERA" />
+    <uses-permission android:name="android.permission.ACCESS_GPS" />
+    <uses-permission android:name="android.permission.CHANGE_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.ACCESS_ASSISTED_GPS" />
+    <uses-permission android:name="android.permission.WRITE_SETTINGS" />
+    <!-- for sms -->
+    <uses-permission android:name="android.permission.RECEIVE_SMS" />
+    <uses-permission android:name="android.permission.READ_SMS" />
+    <uses-permission android:name="android.permission.SEND_SMS" />
+    <!--
+     The following two permissions are not required to use
+     Google Maps Android API v2, but are recommended.
+    -->
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+
+    <permission
+        android:name="id.starkey.pelanggan.permission.MAPS_RECEIVE"
+        android:protectionLevel="signature" />
+
+    <uses-permission android:name="id.starkey.pelanggan.permission.MAPS_RECEIVE" />
+
+    <supports-screens
+        android:anyDensity="true"
+        android:largeScreens="true"
+        android:normalScreens="true"
+        android:resizeable="true"
+        android:smallScreens="true"
+        android:xlargeScreens="true" />
+
+    <application
+        android:name="id.starkey.pelanggan.Apps"
+        android:allowBackup="true"
+        android:icon="@mipmap/ic_starkey_customer_curved"
+        android:label="@string/app_name"
+        android:largeHeap="true"
+        android:roundIcon="@mipmap/ic_starkey_customer_curved"
+        android:supportsRtl="true"
+        android:theme="@style/AppTheme">
+        <activity
+            android:name="id.starkey.pelanggan.SplashScreen.SplashActivity"
+            android:label="@string/app_name"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+
+        <!-- meta data map -->
+        <meta-data
+            android:name="com.google.android.gms.version"
+            android:value="@integer/google_play_services_version" />
+
+        <meta-data
+            android:name="com.google.android.geo.API_KEY"
+            android:value="@string/google_maps_key"/>
+        <!--
+        <meta-data
+            android:name="com.google.android.maps.v2.API_KEY"
+            android:value="AIzaSyBethvwb6wjZDNC0JPyUcjdXtfYhcJWWCQ" />
+        -->
+
+        <activity
+            android:name="id.starkey.pelanggan.Maps.MapsActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name="id.starkey.pelanggan.Kunci.IsiDetailKunci.IsiDetailKunciActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name="id.starkey.pelanggan.Kunci.ReviewKunci.ReviewKunciActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name="id.starkey.pelanggan.Kunci.TrxKunci.TrxKunciActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name="id.starkey.pelanggan.Kunci.WaitingKunci.WaitingKunciActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name="id.starkey.pelanggan.Ratting.RattingActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name="id.starkey.pelanggan.Laundry.IsiDetailLaundry.IsiDetailLaundryActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name="id.starkey.pelanggan.Laundry.ReviewLaundry.ReviewLaundryActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name="id.starkey.pelanggan.Laundry.WaitingLaundry.WaitingLaundryActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name="id.starkey.pelanggan.Laundry.TrxLaundry.TrxLaundryActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name="id.starkey.pelanggan.Stempel.IsiDetailStempel.IsiDetailStempelActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name="id.starkey.pelanggan.Stempel.ReviewStempel.ReviewStempelActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name="id.starkey.pelanggan.Stempel.WaitingStempel.WaitingStempelActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name="id.starkey.pelanggan.Stempel.TrxStempel.TrxStempelActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name="id.starkey.pelanggan.History.HistoryActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name="id.starkey.pelanggan.Bantuan.BantuanActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name="id.starkey.pelanggan.SyaratdanK.SyaratdanActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name="id.starkey.pelanggan.Pengaturan.PengaturanActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name="id.starkey.pelanggan.Hubungi.HubungiActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name="id.starkey.pelanggan.MainActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name="id.starkey.pelanggan.Daftar.InputHpActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name="id.starkey.pelanggan.Daftar.InputKodeActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name="id.starkey.pelanggan.Daftar.FormDaftarActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name="id.starkey.pelanggan.Daftar.InputFotoActivity"
+            android:screenOrientation="portrait" />
+
+        <service android:name="id.starkey.pelanggan.Utilities.GPSTracker" />
+
+        <activity
+            android:name="id.starkey.pelanggan.MapsUbahLoc.MapsUbahActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name="id.starkey.pelanggan.Test.CobaSocketActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name="id.starkey.pelanggan.Kunci.PilihKunci.PilihKunciActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name="id.starkey.pelanggan.Login.LoginActivity"
+            android:screenOrientation="portrait" />
+
+        <service android:name="id.starkey.pelanggan.Firebase.MyFirebaseInstanceIdService">
+            <intent-filter>
+                <action android:name="com.google.firebase.INSTANCE_ID_EVENT" />
+            </intent-filter>
+        </service>
+        <service android:name="id.starkey.pelanggan.Firebase.MyFirebaseMessagingService">
+            <intent-filter>
+                <action android:name="com.google.firebase.MESSAGING_EVENT" />
+            </intent-filter>
+        </service>
+
+        <activity
+            android:name="id.starkey.pelanggan.EditFotoProfile.EditFotoActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name="id.starkey.pelanggan.LupaPassword.NomorHpActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name="id.starkey.pelanggan.LupaPassword.VerifCodeActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name="id.starkey.pelanggan.LupaPassword.FormNewPassActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name="id.starkey.pelanggan.LiveRatting.LiveRattingActivity"
+            android:screenOrientation="portrait" />
+        <activity android:name="id.starkey.pelanggan.Stempel.EnlargeImgStempel.EnlargeImgStempelActivity" />
+        <activity android:name="id.starkey.pelanggan.InfoTerbaru.InfoTerbaruActivity"></activity>
+    </application>
+
+</manifest>

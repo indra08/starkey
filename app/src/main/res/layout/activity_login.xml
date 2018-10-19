@@ -1,0 +1,124 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="id.starkey.pelanggan.Login.LoginActivity"
+    android:background="@drawable/background_hitam"
+    android:padding="0dp">
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:padding="40dp">
+
+
+
+            <ImageView
+                android:id="@+id/ivLogo"
+                android:layout_marginTop="20dp"
+                android:layout_width="wrap_content"
+                android:layout_height="250dp"
+                android:src="@drawable/logo_starkey_kuning" />
+
+            <EditText
+                android:id="@+id/edtUsername"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="40dp"
+                android:layout_below="@+id/ivLogo"
+                android:background="@drawable/background_edittext"
+                android:fontFamily="monospace"
+                android:gravity="center"
+                android:hint="Nomor Handphone"
+                android:padding="2dp"
+                android:textColor="@color/colorPutih"
+                android:textColorHint="@color/colorPutih"
+                android:textSize="22sp"
+                android:maxLines="1"
+                android:lines="1"
+                android:singleLine="true"/>
+
+            <EditText
+                android:id="@+id/edtPassword"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:layout_below="@+id/edtUsername"
+                android:background="@drawable/background_edittext"
+                android:fontFamily="monospace"
+                android:gravity="center"
+                android:hint="Password"
+                android:inputType="textPassword"
+                android:padding="2dp"
+                android:textColor="@color/colorPutih"
+                android:textColorHint="@color/colorPutih"
+                android:textSize="22sp" />
+
+            <TextView
+                android:id="@+id/txtLupaPassword"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="monospace"
+                android:text="Lupa password?"
+                android:textColor="@color/colorPutih"
+                android:textSize="17sp"
+                android:layout_below="@+id/edtPassword"
+                android:layout_alignParentRight="true"/>
+
+            <Button
+                android:id="@+id/btnLogin"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:layout_below="@+id/txtLupaPassword"
+                android:background="@drawable/background_button_kuning"
+                android:fontFamily="monospace"
+                android:gravity="center"
+                android:hint="Login"
+                android:padding="2dp"
+                android:textColor="@color/colorHitam"
+                android:textColorHint="@color/colorHitam"
+                android:textSize="21sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="monospace"
+                android:layout_toLeftOf="@+id/txtDaftar"
+                android:text="Belum punya akun? "
+                android:textColor="@color/colorPutih"
+                android:textSize="14sp"
+                android:layout_below="@+id/btnLogin"
+                android:layout_marginTop="8dp"/>
+
+            <TextView
+                android:id="@+id/txtDaftar"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:fontFamily="monospace"
+                android:text="daftar."
+                android:textColor="@color/colorPutih"
+                android:textSize="14sp"
+                android:textStyle="bold"
+                android:layout_below="@+id/btnLogin"
+                android:layout_marginTop="8dp"/>
+
+            <TextView
+                android:id="@+id/tvTampungTokenFb"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="token"
+                android:visibility="invisible"/>
+
+
+        </RelativeLayout>
+    </ScrollView>
+</RelativeLayout>

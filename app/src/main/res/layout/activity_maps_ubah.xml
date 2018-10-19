@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="id.starkey.pelanggan.MapsUbahLoc.MapsUbahActivity">
+
+    <fragment
+        android:id="@+id/place_autocomplete_ubah"
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:name="com.google.android.gms.location.places.ui.PlaceAutocompleteFragment"/>
+
+    <RelativeLayout
+        android:layout_below="@+id/place_autocomplete_ubah"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_above="@+id/btnLanjutkan">
+
+        <fragment
+            android:id="@+id/map_ubah"
+            android:name="com.google.android.gms.maps.MapFragment"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"/>
+
+        <ProgressBar
+            android:id="@+id/pb_ubah"
+            style="?android:attr/progressBarStyleHorizontal"
+            android:layout_width="match_parent"
+            android:indeterminate="true"
+            android:layout_height="10dp"
+            android:indeterminateTint="@color/colorMerah"
+            android:indeterminateTintMode="src_in"/>
+
+        <View
+            android:id="@+id/lineCenter"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_centerVertical="true"/>
+
+        <ImageView
+            android:id="@+id/markerCenter"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_action_marker"
+            android:layout_above="@id/lineCenter"
+            android:layout_centerHorizontal="true"/>
+
+        />
+
+    </RelativeLayout>
+
+
+
+    <!-- START et detail coordinate -->
+    <LinearLayout
+        android:id="@+id/Alamat"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:background="@color/colorPutih">
+
+        <ImageView
+            android:layout_width="60dp"
+            android:layout_height="60dp"
+            android:padding="15dp"
+            android:src="@drawable/ic_action_marker" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/txtNama_ubah"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text=""
+                android:maxLines="1"
+                android:lines="1"
+                android:textColor="@color/colorHitam" />
+
+            <TextView
+                android:id="@+id/txtDetail_ubah"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text=""
+                android:maxLines="2"
+                android:lines="2"
+                android:textColor="@color/colorAbuAbu" />
+        </LinearLayout>
+    </LinearLayout>
+    <!-- END et detail coordinate -->
+
+    <Button
+        android:id="@+id/btnUbahMap"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:text="Pilih"
+        android:background="@drawable/background_button"
+        android:textStyle="bold"/>
+
+</RelativeLayout>

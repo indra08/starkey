@@ -1,0 +1,150 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="id.starkey.pelanggan.Kunci.IsiDetailKunci.IsiDetailKunciActivity">
+
+    <android.support.design.widget.AppBarLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:theme="@style/AppTheme.AppBarOverlay"
+        android:id="@+id/appBarIsiDetailKunci">
+
+        <android.support.v7.widget.Toolbar
+            android:id="@+id/toolbarIsiDetailKunci"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            android:background="?attr/colorPrimary"
+            app:popupTheme="@style/AppTheme.AppBarOverlay" >
+
+        </android.support.v7.widget.Toolbar>
+
+    </android.support.design.widget.AppBarLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/appBarIsiDetailKunci"
+        android:padding="8dp">
+
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="#fafafa"
+                android:orientation="vertical">
+
+                <android.support.v7.widget.CardView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="10dp">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical">
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:orientation="vertical"
+                            android:padding="16dp">
+
+                            <TextView
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:text="JENIS LAYANAN"
+                                android:textColor="@color/colorHitam"
+                                android:textStyle="bold" />
+
+                            <com.jaredrummler.materialspinner.MaterialSpinner
+                                android:id="@+id/spinnerLayananKunci"
+                                android:layout_width="match_parent"
+                                android:layout_height="40dp"
+                                android:textStyle="bold"
+                                app:ms_background_color="@color/background_activity"/>
+
+                            <TextView
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="10dp"
+                                android:text="Jenis Kunci"
+                                android:textColor="@color/colorHitam"
+                                android:textStyle="bold" />
+
+                            <EditText
+                                android:id="@+id/edittextJenisKunci"
+                                style="@style/style_edittext"
+                                android:clickable="true"
+                                android:layout_width="match_parent"/>
+
+                            <TextView
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="10dp"
+                                android:text="Jumlah"
+                                android:textColor="@color/colorHitam"
+                                android:textStyle="bold" />
+
+                            <EditText
+                                android:id="@+id/edittextQty"
+                                style="@style/style_edittext"
+                                android:layout_width="match_parent"
+                                android:inputType="number"
+                                android:text="1"></EditText>
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:textColor="@color/colorHitam"
+                                android:text="Upload Foto"
+                                android:textStyle="bold"
+                                android:layout_marginTop="10dp"/>
+
+                            <ImageView
+                                android:id="@+id/iv1"
+                                android:layout_width="75dp"
+                                android:layout_height="75dp"
+                                android:layout_marginTop="4dp"
+                                android:src="@drawable/ic_add"
+                                android:scaleType="centerCrop"/>
+
+                            <TextView
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="10dp"
+                                android:text="Keterangan"
+                                android:textColor="@color/colorHitam"
+                                android:textStyle="bold" />
+
+                            <EditText
+                                android:id="@+id/editTextKeterangan"
+                                style="@style/style_textarea"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"></EditText>
+                        </LinearLayout>
+                    </LinearLayout>
+                </android.support.v7.widget.CardView>
+
+                <Button
+                    android:id="@+id/btnLanjutReview"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:layout_margin="10dp"
+                    android:background="@drawable/background_button"
+                    android:text="Lanjutkan"
+                    android:textStyle="bold" />
+            </LinearLayout>
+
+        </ScrollView>
+
+
+
+    </RelativeLayout>
+</RelativeLayout>

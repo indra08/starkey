@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:padding="8dp"
+    android:background="@color/background_activity">
+
+    <com.jaredrummler.materialspinner.MaterialSpinner
+        android:id="@+id/spinnerMerkPintu"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/searchviewKunciLain"
+        android:hint="Semua merk"
+        app:ms_background_color="@color/background_activity"
+        android:layout_alignParentRight="true"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Merk"
+        android:textSize="14dp"
+        android:layout_marginTop="14dp"
+        android:layout_toLeftOf="@+id/spinnerMerkPintu"/>
+
+    <RelativeLayout
+        android:id="@+id/layoutAdaPintu"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/spinnerMerkPintu"
+        android:layout_marginTop="8dp"
+        android:layout_marginLeft="4dp">
+
+        <android.support.v7.widget.RecyclerView
+
+            android:id="@+id/recyclerViewKunciPintu"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_above="@+id/btnPilihKunciPintu">
+        </android.support.v7.widget.RecyclerView>
+
+        <Button
+            android:id="@+id/btnPilihKunciPintu"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:text="pilih"
+            android:textStyle="bold"
+            android:background="@drawable/background_button"/>
+
+    </RelativeLayout>
+
+    <!-- START if null MAIN LAYOUT -->
+    <RelativeLayout
+        android:id="@+id/layoutKosongPintu"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/spinnerMerkPintu"
+        android:background="@color/background_activity"
+        android:visibility="invisible">
+
+        <ImageView
+            android:id="@+id/imgKosongPintu"
+            android:src="@drawable/ic_data"
+            android:layout_width="200dp"
+            android:layout_height="200dp"
+            android:layout_centerInParent="true"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Data Kosong"
+            android:layout_below="@+id/imgKosongPintu"
+            android:layout_centerHorizontal="true"/>
+
+    </RelativeLayout>
+    <!-- END if null MAIN LAYOUT -->
+
+</RelativeLayout>
