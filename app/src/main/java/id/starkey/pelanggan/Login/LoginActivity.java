@@ -9,6 +9,7 @@ import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.os.Build;
+import android.support.v4.content.ContextCompat;
 import android.support.v4.content.LocalBroadcastManager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -39,18 +40,21 @@ import id.starkey.pelanggan.R;
 
 import id.starkey.pelanggan.RequestHandler;
 import id.starkey.pelanggan.Test.CobaSocketActivity;
+import id.starkey.pelanggan.Utilities.RuntimePermissionsActivity;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.HashMap;
 
-public class LoginActivity extends AppCompatActivity implements View.OnClickListener {
+public class LoginActivity extends RuntimePermissionsActivity implements View.OnClickListener {
 
     private Button bLogin;
     private TextView tDaftar, tampungToken, tLupaPass;
     private EditText etEmail, etPass;
     private BroadcastReceiver broadcastReceiver;
+    private Context context;
+    private static final int REQUEST_PERMISSIONS = 20;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -66,6 +70,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         tLupaPass = findViewById(R.id.txtLupaPassword);
         tLupaPass.setOnClickListener(this);
         tampungToken = findViewById(R.id.tvTampungTokenFb);
+        context = this;
         broadcastReceiver = new BroadcastReceiver() {
             @Override
             public void onReceive(Context context, Intent intent) {
@@ -74,24 +79,38 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                 loadToken.dismiss();
             }
         };
+
         if (SharedPrefManager.getInstance(this).getToken() != null) {
             tampungToken.setText(SharedPrefManager.getInstance(LoginActivity.this).getToken());
             loadToken.dismiss();
             Log.d("JALTOKENBRO",SharedPrefManager.getInstance(this).getToken());
         }
 
-
         registerReceiver(broadcastReceiver, new IntentFilter(MyFirebaseInstanceIdService.TOKEN_BROADCAST));
 
+        if (ContextCompat.checkSelfPermission(
+                context, android.Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED || ContextCompat.checkSelfPermission(
+                context, android.Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED || ContextCompat.checkSelfPermission(
+                context, android.Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED || ContextCompat.checkSelfPermission(
+                context, android.Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED || ContextCompat.checkSelfPermission(
+                context, android.Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED || ContextCompat.checkSelfPermission(
+                context, Manifest.permission.WAKE_LOCK) != PackageManager.PERMISSION_GRANTED || ContextCompat.checkSelfPermission(
+                context, Manifest.permission.RECEIVE_SMS) != PackageManager.PERMISSION_GRANTED || ContextCompat.checkSelfPermission(
+                context, Manifest.permission.SEND_SMS) != PackageManager.PERMISSION_GRANTED || ContextCompat.checkSelfPermission(
+                context, Manifest.permission.READ_SMS) != PackageManager.PERMISSION_GRANTED) {
 
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M && checkSelfPermission
-                (Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-            requestPermissions(new String[]{Manifest.permission.ACCESS_COARSE_LOCATION},
-                    2);
-        } else if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M && checkSelfPermission
-                (Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-            requestPermissions(new String[]{Manifest.permission.ACCESS_FINE_LOCATION},
-                    2);
+            LoginActivity.super.requestAppPermissions(new
+                            String[]{android.Manifest.permission.ACCESS_COARSE_LOCATION,
+                            android.Manifest.permission.ACCESS_FINE_LOCATION,
+                            android.Manifest.permission.WRITE_EXTERNAL_STORAGE,
+                            android.Manifest.permission.READ_EXTERNAL_STORAGE,
+                            android.Manifest.permission.CAMERA,
+                            android.Manifest.permission.WAKE_LOCK,
+                            Manifest.permission.RECEIVE_SMS,
+                            Manifest.permission.SEND_SMS,
+                            Manifest.permission.READ_SMS}, R.string
+                            .runtime_permissions_txt
+                    , REQUEST_PERMISSIONS);
         }
 
         //init btn
@@ -110,6 +129,10 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
     }
 
+    @Override
+    public void onPermissionsGranted(int requestCode) {
+
+    }
 
 
     @Override

@@ -1,8 +1,10 @@
 package id.starkey.pelanggan.Firebase;
 
+import android.app.AlertDialog;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.media.RingtoneManager;
 import android.net.Uri;
@@ -75,7 +77,9 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
                 intentMain.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 startActivity(intentMain);
                 //WaitingKunciActivity.getInstance().finish();
-                //Toast.makeText(this, "Mitra telah membatalkan booking anda", Toast.LENGTH_SHORT).show();
+                //Toast.makeText(this, "Mitra telah membatalkan pesanan, harap order kembali", Toast.LENGTH_SHORT).show();
+                MainActivity.isBatalByMitra = true;
+                TrxKunciActivity.mitraState = 9;
                 TrxKunciActivity.getInstance().finish();
             } else if (statusMessage.equals("transaction_failed_mitra_not_found")){//tidak ada mitra yang ambil orderan kunci
                 WaitingKunciActivity.getInstance().finish();
@@ -94,6 +98,7 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
                 Intent toMain = new Intent(MyFirebaseMessagingService.this, MainActivity.class);
                 toMain.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 startActivity(toMain);
+                TrxStempelActivity.mitraState = 9;
                 TrxStempelActivity.getInstance().finish();
 
             } else if (statusMessage.equals("stempel_transaction_finish")){//request trx stempel finish

@@ -85,6 +85,7 @@ public class TrxKunciActivity extends AppCompatActivity implements OnMapReadyCal
 
     NumberFormat rupiahFormat;
     String Rupiah = "Rp.";
+    public static int mitraState = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -208,6 +209,8 @@ public class TrxKunciActivity extends AppCompatActivity implements OnMapReadyCal
         getPref();
 
         statusTransaksiKunci(sId);
+
+        mitraState = 0;
     }
 
     public static TrxKunciActivity getInstance(){
@@ -253,7 +256,8 @@ public class TrxKunciActivity extends AppCompatActivity implements OnMapReadyCal
 
                             tStatusName.setText(statusname);
                             if (tStatusName.getText().toString().equals("menuju lokasi")){
-                                iCancelTrx.setEnabled(false);
+                                mitraState = 2;
+                                //iCancelTrx.setEnabled(false);
                             }
                             if (tStatusName.getText().toString().equals("sampai lokasi")){
                                 tEstWaktu.setVisibility(View.INVISIBLE);
@@ -510,7 +514,23 @@ public class TrxKunciActivity extends AppCompatActivity implements OnMapReadyCal
             startActivity(intentSms);
         }
         if (v == iCancelTrx){
-            askDeclinedTransaction();
+            if(mitraState == 2){
+
+                AlertDialog dialog = new AlertDialog.Builder(TrxKunciActivity.this)
+                        .setTitle("Peringatan")
+                        .setMessage("Pesanan tidak dapat dibatalkan karena mitra menuju ke lokasi")
+                        .setCancelable(false)
+                        .setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialogInterface, int i) {
+
+                            }
+                        })
+                        .show();
+            }else{
+                askDeclinedTransaction();
+            }
+
         }
     }
 

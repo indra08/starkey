@@ -28,8 +28,10 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
 import id.starkey.pelanggan.ConfigLink;
+import id.starkey.pelanggan.MainActivity;
 import id.starkey.pelanggan.R;
 import id.starkey.pelanggan.Stempel.WaitingStempel.WaitingStempelActivity;
+import id.starkey.pelanggan.Utilities.LastOrder;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -54,6 +56,7 @@ public class ReviewStempelActivity extends AppCompatActivity implements View.OnC
     //format rupiah
     NumberFormat rupiahFormat;
     String Rupiah = "Rp.";
+    public static LastOrder lastOrder;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -145,6 +148,13 @@ public class ReviewStempelActivity extends AppCompatActivity implements View.OnC
             toOrderStempel.putExtra("keterangan", sKetStemp);
             toOrderStempel.putExtra("waktuawal", timeUser);
             toOrderStempel.putExtra("biayaestimasi", sTotalStemp);
+
+            lastOrder = new LastOrder();
+            lastOrder.createStampelOrder(sJenisStemp, sUkuranStemp, latStemp, lngStemp, sAlamatStemp,
+                    sQtyStemp, sKetStemp, timeUser, sTotalStemp);
+
+            MainActivity.stateOrder = 2;
+
             startActivity(toOrderStempel);
 
         }

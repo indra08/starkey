@@ -90,6 +90,7 @@ public class TrxStempelActivity extends AppCompatActivity implements OnMapReadyC
     Handler h = new Handler();
     int delay = 10*1000; //1 second=1000 milisecond, 5*1000=5seconds
     Runnable runnable;
+    public static int mitraState = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -196,6 +197,7 @@ public class TrxStempelActivity extends AppCompatActivity implements OnMapReadyC
         getDetailTrxStempel();
 
         statusTransaksiStempel(sNoTrxStempel);
+        mitraState = 0;
 
     }
 
@@ -298,15 +300,14 @@ public class TrxStempelActivity extends AppCompatActivity implements OnMapReadyC
                             trackPositionMitraStemp(latMitraTracking, lngMitraTracking);
                             getEstimasiWaktuStempel(userLat, userLng, latMitraTracking, lngMitraTracking);
 
-                            /*
-                            tStatusName.setText(statusname);
-                            if (tStatusName.getText().toString().equals("menuju lokasi")){
-                                iCancelTrx.setEnabled(false);
+                            //tStatusOrderStempel.setText(statusname);
+                            if (tStatusOrderStempel.getText().toString().equals("menuju lokasi")){
+                                mitraState = 2;
+                                //iCancelTrxStempel.setEnabled(false);
                             }
-                            if (tStatusName.getText().toString().equals("sampai lokasi")){
-                                tEstWaktu.setVisibility(View.INVISIBLE);
+                            if (tStatusOrderStempel.getText().toString().equals("sampai lokasi")){
+                                tEstimasiOrderStempel.setVisibility(View.INVISIBLE);
                             }
-                             */
 
 
                         } catch (JSONException e) {
@@ -441,7 +442,23 @@ public class TrxStempelActivity extends AppCompatActivity implements OnMapReadyC
             startActivity(intentSms);
         }
         if (v == iCancelTrxStempel){
-            askDeclinedTransaction();
+            if(mitraState == 2){
+
+                AlertDialog dialog = new AlertDialog.Builder(TrxStempelActivity.this)
+                        .setTitle("Peringatan")
+                        .setMessage("Pesanan tidak dapat dibatalkan karena mitra menuju ke lokasi")
+                        .setCancelable(false)
+                        .setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialogInterface, int i) {
+
+                            }
+                        })
+                        .show();
+            }else{
+                askDeclinedTransaction();
+            }
+
         }
         if (v == tDetail){
             //detail stempel

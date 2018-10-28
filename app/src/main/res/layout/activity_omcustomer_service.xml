@@ -1,0 +1,130 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".OMCustomerService.OMCustomerService">
+
+    <android.support.design.widget.AppBarLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:theme="@style/AppTheme.AppBarOverlay"
+        android:id="@+id/ab_top"
+        android:layout_alignParentTop="true">
+
+        <android.support.v7.widget.Toolbar
+            android:id="@+id/toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            android:background="?attr/colorPrimary"
+            app:popupTheme="@style/AppTheme.AppBarOverlay"
+            app:titleTextColor="@color/color_black">
+
+        </android.support.v7.widget.Toolbar>
+
+    </android.support.design.widget.AppBarLayout>
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:scrollbars="none"
+        android:layout_below="@id/ab_top"
+        android:layout_margin="@dimen/margin_big">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:gravity="center">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:textColor="@color/color_grey"
+                android:textAllCaps="true"
+                android:text="Customer Service"
+                android:textSize="20sp"/>
+
+            <ImageView
+                android:layout_width="100dp"
+                android:layout_height="100dp"
+                android:layout_marginTop="@dimen/margin_default"
+                android:layout_marginBottom="@dimen/margin_default"
+                android:src="@mipmap/ic_cs_yellow"/>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textSize="@dimen/text_small"
+                android:text="Nama"
+                android:textColor="@color/color_grey_white"/>
+
+            <EditText
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/margin_small"
+                android:layout_marginBottom="@dimen/margin_small"
+                android:textSize="@dimen/text_default"
+                android:backgroundTint="@color/color_grey_white"
+                android:text=""
+                android:id="@+id/edt_nama"
+                android:textColor="@color/color_grey"
+                android:inputType="textPersonName"
+                android:imeOptions="actionNext"/>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textSize="@dimen/text_small"
+                android:text="Nomor Telepon"
+                android:textColor="@color/color_grey_white"/>
+
+            <EditText
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/margin_small"
+                android:layout_marginBottom="@dimen/margin_small"
+                android:textSize="@dimen/text_default"
+                android:backgroundTint="@color/color_grey_white"
+                android:text=""
+                android:id="@+id/edt_notelp"
+                android:textColor="@color/color_grey"
+                android:inputType="phone"
+                android:imeOptions="actionNext"/>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textSize="@dimen/text_small"
+                android:text="Keterangan / Order"
+                android:textColor="@color/color_grey_white"/>
+
+            <EditText
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:minHeight="100dp"
+                android:gravity="top"
+                android:layout_marginTop="@dimen/margin_small"
+                android:layout_marginBottom="@dimen/margin_small"
+                android:textSize="@dimen/text_default"
+                android:backgroundTint="@color/color_grey_white"
+                android:text=""
+                android:id="@+id/edt_keterangan"
+                android:textColor="@color/color_grey"
+                android:inputType="textPersonName"
+                android:imeOptions="actionDone"/>
+
+            <Button
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/btn_yellow"
+                android:textColor="@color/color_grey"
+                android:layout_marginTop="@dimen/margin_default"
+                android:id="@+id/btn_kirim"
+                android:text="KIRIM"/>
+        </LinearLayout>
+    </ScrollView>
+
+</RelativeLayout>

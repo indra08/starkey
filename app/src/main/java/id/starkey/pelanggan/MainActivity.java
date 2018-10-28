@@ -7,6 +7,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentSender;
 import android.content.SharedPreferences;
+import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.content.res.ColorStateList;
 import android.graphics.Color;
@@ -16,6 +17,7 @@ import android.location.Location;
 import android.location.LocationManager;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.CountDownTimer;
 import android.os.Handler;
 import android.provider.Settings;
 import android.support.annotation.NonNull;
@@ -26,6 +28,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AlertDialog;
 import android.util.Log;
+import android.view.MenuInflater;
 import android.view.View;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -58,13 +61,21 @@ import id.starkey.pelanggan.History.HistoryActivity;
 import id.starkey.pelanggan.Home.FragmentHome;
 import id.starkey.pelanggan.Hubungi.HubungiActivity;
 import id.starkey.pelanggan.InfoTerbaru.InfoTerbaruActivity;
+import id.starkey.pelanggan.Kunci.ReviewKunci.ReviewKunciActivity;
 import id.starkey.pelanggan.Kunci.TrxKunci.TrxKunciActivity;
+import id.starkey.pelanggan.Kunci.WaitingKunci.WaitingKunciActivity;
 import id.starkey.pelanggan.Login.LoginActivity;
 import id.starkey.pelanggan.Maps.MapsActivity;
+import id.starkey.pelanggan.OMCustomerService.OMCustomerService;
 import id.starkey.pelanggan.Pengaturan.PengaturanActivity;
+import id.starkey.pelanggan.Stempel.ReviewStempel.ReviewStempelActivity;
 import id.starkey.pelanggan.Stempel.TrxStempel.TrxStempelActivity;
+import id.starkey.pelanggan.Stempel.WaitingStempel.WaitingStempelActivity;
 import id.starkey.pelanggan.SyaratdanK.SyaratdanActivity;
 import id.starkey.pelanggan.Utilities.GPSTracker;
+import id.starkey.pelanggan.Utilities.ItemValidation;
+import id.starkey.pelanggan.Utilities.LastOrder;
+
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.common.api.PendingResult;
@@ -79,6 +90,7 @@ import com.google.android.gms.maps.model.LatLng;
 import com.mikhaellopez.circularimageview.CircularImageView;
 import com.squareup.picasso.Picasso;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -94,7 +106,8 @@ public class MainActivity extends AppCompatActivity
     Drawable transparentDrawable = new ColorDrawable(Color.TRANSPARENT);
 
     private Context mContext;
-    private GPSTracker gps;
+    //private GPSTracker gps;
+    private ItemValidation iv = new ItemValidation();
 
     //google gps
     protected static final String TAG = "LocationOnOff";
@@ -107,6 +120,12 @@ public class MainActivity extends AppCompatActivity
     private String tampungUrlImageUser, tokennyaUser;
     private CircularImageView headerImageView;
     JSONObject jsonBody;
+    private boolean dialogActive = false;
+    public static int stateOrder = 0;
+    private String version = "", latestVersion = "", link = "";
+    private AlertDialog builderVersion;
+    private boolean updateRequired = false;
+    public static boolean isBatalByMitra = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -123,7 +142,7 @@ public class MainActivity extends AppCompatActivity
 
         } else {
             //Toast.makeText(mContext,"You need have granted permission",Toast.LENGTH_SHORT).show();
-            gps = new GPSTracker(mContext, MainActivity.this);
+            /*gps = new GPSTracker(mContext, MainActivity.this);
 
             // Check if GPS enabled
             if (gps.canGetLocation()) {
@@ -138,7 +157,7 @@ public class MainActivity extends AppCompatActivity
                 // GPS or network is not enabled.
                 // Ask user to enable GPS/network in settings.
                 gps.showSettingsAlert();
-            }
+            }*/
         }
 
         /*
@@ -156,9 +175,6 @@ public class MainActivity extends AppCompatActivity
             }
         });
          */
-
-
-
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
@@ -231,7 +247,7 @@ public class MainActivity extends AppCompatActivity
         //checkGPS();
 
         //new check gps google
-        final LocationManager manager = (LocationManager) MainActivity.this.getSystemService(Context.LOCATION_SERVICE);
+        /*final LocationManager manager = (LocationManager) MainActivity.this.getSystemService(Context.LOCATION_SERVICE);
         if (manager.isProviderEnabled(LocationManager.GPS_PROVIDER) && hasGPSDevice(MainActivity.this)) {
             //Toast.makeText(MainActivity.this,"Gps already enabled",Toast.LENGTH_SHORT).show();
             //finish();
@@ -250,7 +266,9 @@ public class MainActivity extends AppCompatActivity
         }else{
             Log.e("keshav","Gps already enabled");
             //Toast.makeText(MainActivity.this,"Gps already enabled",Toast.LENGTH_SHORT).show();
-        }
+        }*/
+
+        dialogActive = false;
     }
 
     @Override
@@ -426,6 +444,233 @@ public class MainActivity extends AppCompatActivity
     {
         super.onResume();
         //checkGPS();
+        locationAccessChecker();
+        checkVersion();
+
+        if(isBatalByMitra){
+            isBatalByMitra = false;
+            android.app.AlertDialog dialog = new android.app.AlertDialog.Builder(this)
+                    .setTitle("Pesanan Dibatalkan")
+                    .setMessage("Mitra telah membatalkan pesanan anda, silahkan batalkan order atau order kembali.")
+                    .setCancelable(false)
+                    .setPositiveButton("Batalkan", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialogInterface, int i) {
+
+                        }
+                    })
+                    .setNegativeButton("Lanjutkan Order", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialogInterface, int i) {
+
+                            lanjutCariMitra();
+                        }
+                    })
+                    .show();
+        }
+    }
+
+    private void lanjutCariMitra() {
+
+        if(stateOrder == 1){
+
+            try {
+
+                LastOrder lastOrder = ReviewKunciActivity.lastOrder;
+                Intent intent = new Intent( MainActivity.this, WaitingKunciActivity.class);
+                intent.putExtra("idlayanankunci", lastOrder.getIdLayanan());
+                intent.putExtra("idkunci", lastOrder.getIdKunci());
+                intent.putExtra("latitude", lastOrder.getLatitude());
+                intent.putExtra("longitude", lastOrder.getLongitude());
+                intent.putExtra("alamatLengkap", lastOrder.getAlamat());
+                intent.putExtra("qty", lastOrder.getQty());
+                intent.putExtra("keterangan", lastOrder.getKeterangan());
+                intent.putExtra("biayaEstimasiS", lastOrder.getTotal());
+                intent.putExtra("biayaEstimasi", lastOrder.getTotalEstimasi());
+                intent.putExtra("gambarByUser", lastOrder.getGambar());
+                stateOrder = 1;
+                startActivity(intent);
+                //finish();
+            }catch (Exception e){
+                e.printStackTrace();
+            }
+        }else if(stateOrder == 2){
+
+            try {
+
+                LastOrder lastOrder = ReviewStempelActivity.lastOrder;
+                Intent toOrderStempel = new Intent(MainActivity.this, WaitingStempelActivity.class);
+                toOrderStempel.putExtra("namastempel", lastOrder.getNamaStemp());
+                toOrderStempel.putExtra("ukuran", lastOrder.getUkuranStemp());
+                toOrderStempel.putExtra("latUser", lastOrder.getLatitude());
+                toOrderStempel.putExtra("lngUser", lastOrder.getLongitude());
+                toOrderStempel.putExtra("namalokasi", lastOrder.getAlamat());
+                toOrderStempel.putExtra("qty", lastOrder.getQty());
+                toOrderStempel.putExtra("keterangan", lastOrder.getKeterangan());
+                toOrderStempel.putExtra("waktuawal", lastOrder.getWaktuAwal());
+                toOrderStempel.putExtra("biayaestimasi", lastOrder.getTotal());
+                stateOrder = 2;
+
+                startActivity(toOrderStempel);
+                //finish();
+            }catch (Exception e){
+                e.printStackTrace();
+            }
+        }
+    }
+
+    public void locationAccessChecker() {
+        final LocationManager manager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
+
+        if (!manager.isProviderEnabled(LocationManager.GPS_PROVIDER) && !manager.isProviderEnabled(LocationManager.NETWORK_PROVIDER)) {
+            buildAlertMessageNoGps();
+        }
+    }
+
+    private void checkVersion(){
+
+        PackageInfo pInfo = null;
+        version = "";
+
+        try {
+            pInfo = getPackageManager().getPackageInfo(getPackageName(), 0);
+        } catch (PackageManager.NameNotFoundException e) {
+            e.printStackTrace();
+        }
+
+        version = pInfo.versionName;
+        //getSupportActionBar().setSubtitle(getResources().getString(R.string.app_name) + " v "+ version);
+        //tvVersion.setText(getResources().getString(R.string.app_name) + " v "+ version);
+        latestVersion = "";
+        link = "";
+
+        // Post params to be sent to the server
+        HashMap<String, String> params = new HashMap<String, String>();
+        params.put("flag_app", "user");
+
+        JsonObjectRequest request_json = new JsonObjectRequest(Request.Method.POST ,ConfigLink.getVersion, new JSONObject(params),
+                new Response.Listener<JSONObject>() {
+                    @Override
+                    public void onResponse(JSONObject response) {
+
+                        if(builderVersion != null){
+                            if(builderVersion.isShowing()) builderVersion.dismiss();
+                        }
+
+                        try {
+
+                            String status = response.getString("status");
+                            if(status.equals("success")){
+
+                                JSONArray ja = response.getJSONArray("data");
+                                if(ja.length() > 0){
+
+                                    JSONObject jo = ja.getJSONObject(0);
+                                    latestVersion = jo.getString("versi");
+                                    link = jo.getString("link");
+                                    updateRequired = (iv.parseNullInteger(jo.getString("status")) == 1) ? true : false;
+                                    if(!version.trim().equals(latestVersion.trim()) && link.length() > 0){
+
+                                        if(updateRequired){
+
+                                            builderVersion = new AlertDialog.Builder(mContext)
+                                                    .setIcon(R.mipmap.ic_starkey_customer_curved)
+                                                    .setTitle("Update")
+                                                    .setMessage("Versi terbaru "+latestVersion+" telah tersedia, mohon update ke versi terbaru.")
+                                                    .setPositiveButton("Update Sekarang", new DialogInterface.OnClickListener() {
+                                                        @Override
+                                                        public void onClick(DialogInterface dialogInterface, int i) {
+
+                                                            Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(link));
+                                                            startActivity(browserIntent);
+                                                        }
+                                                    })
+                                                    .setCancelable(false)
+                                                    .show();
+                                        }else{
+
+                                            builderVersion = new AlertDialog.Builder(mContext)
+                                                    .setIcon(R.mipmap.ic_starkey_customer_curved)
+                                                    .setTitle("Update")
+                                                    .setMessage("Versi terbaru "+latestVersion+" telah tersedia, mohon update ke versi terbaru.")
+                                                    .setPositiveButton("Update Sekarang", new DialogInterface.OnClickListener() {
+                                                        @Override
+                                                        public void onClick(DialogInterface dialogInterface, int i) {
+
+                                                            Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(link));
+                                                            startActivity(browserIntent);
+                                                        }
+                                                    })
+                                                    .setNegativeButton("Update Nanti", new DialogInterface.OnClickListener() {
+                                                        @Override
+                                                        public void onClick(DialogInterface dialogInterface, int i) {
+                                                            //dialogInterface.dismiss();
+                                                        }
+                                                    }).show();
+                                        }
+                                    }
+                                }
+                            }
+
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+
+                //VolleyLog.e("Err Volley: ", error.getMessage());
+                //error.printStackTrace();
+                String message = null;
+                if (error instanceof NetworkError) {
+                    message = "Tidak ada koneksi Internet";
+                } else if (error instanceof ServerError) {
+                    message = "Server tidak ditemukan";
+                } else if (error instanceof AuthFailureError) {
+                    message = "Tidak ada koneksi Internet";
+                } else if (error instanceof ParseError) {
+                    message = "Parsing data Error";
+                } else if (error instanceof TimeoutError) {
+                    message = "Connection TimeOut";
+                }
+                Toast.makeText(getApplicationContext(),message, Toast.LENGTH_LONG).show();
+            }
+        });
+
+        int socketTimeout = 30000; //30 detik
+        RetryPolicy policy = new DefaultRetryPolicy(socketTimeout,
+                DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
+                DefaultRetryPolicy.DEFAULT_BACKOFF_MULT);
+        // add the request object to the queue to be executed
+        //RequestQueue requestQueue = Volley.newRequestQueue(this);
+        //requestQueue.add(request_json);
+        request_json.setRetryPolicy(policy);
+        RequestHandler.getInstance(this).addToRequestQueue(request_json);
+    }
+
+    private void buildAlertMessageNoGps() {
+        if(!dialogActive){
+            dialogActive = true;
+            final AlertDialog.Builder builder = new AlertDialog.Builder(this);
+            builder.setMessage("Mohon Hidupkan Akses Lokasi (GPS) Anda.")
+                    .setCancelable(false)
+                    .setPositiveButton("Hidupkan", new DialogInterface.OnClickListener() {
+                        public void onClick(final DialogInterface dialog, final int id) {
+                            startActivity(new Intent(android.provider.Settings.ACTION_LOCATION_SOURCE_SETTINGS));
+                        }
+                    });
+            final AlertDialog alert = builder.create();
+            alert.show();
+
+            alert.setOnDismissListener(new DialogInterface.OnDismissListener() {
+                @Override
+                public void onDismiss(DialogInterface dialogInterface) {
+                    dialogActive = false;
+                }
+            });
+        }
+
     }
 
     @Override
@@ -456,7 +701,7 @@ public class MainActivity extends AppCompatActivity
 
                     // contacts-related task you need to do.
 
-                    gps = new GPSTracker(mContext, MainActivity.this);
+                    /*gps = new GPSTracker(mContext, MainActivity.this);
 
                     // Check if GPS enabled
                     if (gps.canGetLocation()) {
@@ -471,7 +716,7 @@ public class MainActivity extends AppCompatActivity
                         // GPS or network is not enabled.
                         // Ask user to enable GPS/network in settings.
                         gps.showSettingsAlert();
-                    }
+                    }*/
 
                 } else {
 
@@ -582,9 +827,11 @@ public class MainActivity extends AppCompatActivity
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.main, menu);
-        return true;
+
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.main, menu);
+
+        return super.onCreateOptionsMenu(menu);
     }
 
     @Override
@@ -595,7 +842,9 @@ public class MainActivity extends AppCompatActivity
         int id = item.getItemId();
 
         //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
+        if (id == R.id.nav_cs) {
+            Intent intent = new Intent(mContext, OMCustomerService.class);
+            startActivity(intent);
             return true;
         }
 

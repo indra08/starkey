@@ -31,8 +31,11 @@ import id.starkey.pelanggan.ConfigLink;
 import id.starkey.pelanggan.Kunci.IsiDetailKunci.IsiDetailKunciActivity;
 import id.starkey.pelanggan.Kunci.TrxKunci.TrxKunciActivity;
 import id.starkey.pelanggan.Kunci.WaitingKunci.WaitingKunciActivity;
+import id.starkey.pelanggan.MainActivity;
 import id.starkey.pelanggan.MapsUbahLoc.MapsUbahActivity;
 import id.starkey.pelanggan.R;
+import id.starkey.pelanggan.Utilities.LastOrder;
+import id.starkey.pelanggan.Utilities.LastOrderManager;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -53,6 +56,7 @@ public class ReviewKunciActivity extends AppCompatActivity implements View.OnCli
     private String id_item, id_layanan_item, qty;
     private int totalfix;
     JSONObject jsonBody;
+    public static LastOrder lastOrder;
 
     //biaya
     private TextView tvBiayaLayanan, tvBiayaItem, tvTotalBiaya;
@@ -245,6 +249,11 @@ public class ReviewKunciActivity extends AppCompatActivity implements View.OnCli
             intent.putExtra("biayaEstimasiS", tvTotalBiaya.getText().toString());
             intent.putExtra("biayaEstimasi", totalfix);
             intent.putExtra("gambarByUser", sEncodeImage);
+
+            lastOrder = new LastOrder();
+            lastOrder.createKunciOrder(id_layanan_item, id_item, latnya, lngnya, detAlamat, qty,
+                    sKet, tvTotalBiaya.getText().toString(), totalfix, sEncodeImage);
+            MainActivity.stateOrder = 1;
 
             startActivity(intent);
             finish();

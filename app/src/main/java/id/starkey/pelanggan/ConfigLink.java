@@ -101,4 +101,8 @@ public class ConfigLink {
     //changelog info
     public static final String changeLogInfo = base_url + "/api/v1/app_changelog?";
 
+    // API V1.2
+    public static final String saveCustomerService = base_url + "/api/v1.2/customer_service";
+    public static final String getVersion = base_url + "/api/v1.2/update_versi";
+
 }
