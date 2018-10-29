@@ -104,5 +104,6 @@ public class ConfigLink {
     // API V1.2
     public static final String saveCustomerService = base_url + "/api/v1.2/customer_service";
     public static final String getVersion = base_url + "/api/v1.2/update_versi";
+    public static final String savePembatalanOrder = base_url + "/api/v1.2/pembatalan_order";
 
 }

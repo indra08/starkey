@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginLeft="32dp"
+    android:layout_marginRight="32dp"
+    android:layout_marginTop="@dimen/margin_big"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:gravity="center"
+        android:background="@drawable/bg_top_round">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="25sp"
+            android:gravity="center"
+            android:textColor="@color/color_grey_white"
+            android:text="Harap masukkan keterangan pembatalan"
+            android:layout_marginTop="@dimen/margin_big"
+            android:layout_marginLeft="@dimen/margin_big"
+            android:layout_marginRight="@dimen/margin_big"
+            android:layout_marginBottom="@dimen/margin_big"
+            />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/bg_bottom_round"
+        android:padding="@dimen/margin_big"
+        android:orientation="vertical">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Keterangan pembatalan"
+            android:textStyle="bold"
+            android:textColor="@color/black"/>
+
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:minHeight="100dp"
+            android:textColor="@color/black"
+            android:gravity="top"
+            android:textSize="16sp"
+            android:id="@+id/edt_keterangan"
+            android:text=""/>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginTop="@dimen/margin_default"
+            android:weightSum="2">
+
+            <Button
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="wrap_content"
+                android:textColor="@color/color_white"
+                android:id="@+id/btn_batal"
+                android:text="Batal"
+                android:layout_marginRight="@dimen/margin_small"
+                android:background="@drawable/btn_red"/>
+
+            <Button
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="wrap_content"
+                android:textColor="@color/color_grey"
+                android:id="@+id/btn_simpan"
+                android:text="Simpan"
+                android:layout_marginLeft="@dimen/margin_small"
+                android:background="@drawable/btn_yellow"/>
+        </LinearLayout>
+
+
+    </LinearLayout>
+
+</LinearLayout>

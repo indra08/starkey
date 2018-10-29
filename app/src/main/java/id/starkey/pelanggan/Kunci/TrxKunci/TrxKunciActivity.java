@@ -5,6 +5,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
 import android.os.Handler;
 import android.support.v7.app.AlertDialog;
@@ -13,9 +14,12 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.Gravity;
 import android.support.v7.widget.Toolbar;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
+import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
@@ -40,6 +44,8 @@ import id.starkey.pelanggan.MainActivity;
 import id.starkey.pelanggan.R;
 import id.starkey.pelanggan.Ratting.RattingActivity;
 import id.starkey.pelanggan.RequestHandler;
+import id.starkey.pelanggan.Utilities.SessionManager;
+
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapFragment;
@@ -80,7 +86,7 @@ public class TrxKunciActivity extends AppCompatActivity implements OnMapReadyCal
 
     //interval
     Handler h = new Handler();
-    int delay = 10*1000; //1 second=1000 milisecond, 5*1000=5seconds
+    int delay = 2*1000; //1 second=1000 milisecond, 5*1000=5seconds
     Runnable runnable;
 
     NumberFormat rupiahFormat;
@@ -371,6 +377,9 @@ public class TrxKunciActivity extends AppCompatActivity implements OnMapReadyCal
                     public void onResponse(JSONObject response) {
                         String hasil = response.toString();
                         Log.d("hasilcancel", hasil);
+                        Intent main = new Intent(TrxKunciActivity.this, MainActivity.class);
+                        startActivity(main);
+                        finishAffinity();
                     }
                 }, new Response.ErrorListener() {
             @Override
@@ -541,10 +550,8 @@ public class TrxKunciActivity extends AppCompatActivity implements OnMapReadyCal
                 .setPositiveButton("Ya",
                         new DialogInterface.OnClickListener(){
                             public void onClick(DialogInterface dialog, int id){
-                                userCancelTransaction();
-                                Intent main = new Intent(TrxKunciActivity.this, MainActivity.class);
-                                startActivity(main);
-                                finishAffinity();
+
+                                showDialogBatal();
                             }
                         });
         alertDialogBuilder.setNegativeButton("Batal",
@@ -555,6 +562,121 @@ public class TrxKunciActivity extends AppCompatActivity implements OnMapReadyCal
                 });
         AlertDialog alert = alertDialogBuilder.create();
         alert.show();
+    }
+
+    private void showDialogBatal() {
+
+        final AlertDialog.Builder builder = new AlertDialog.Builder(TrxKunciActivity.this);
+        LayoutInflater inflater = (LayoutInflater) getSystemService(LAYOUT_INFLATER_SERVICE);
+        View viewDialog = inflater.inflate(R.layout.dialog_pembatalan_user, null);
+        builder.setView(viewDialog);
+        builder.setCancelable(false);
+
+        final EditText edtKeterangan = (EditText) viewDialog.findViewById(R.id.edt_keterangan);
+        final Button btnBatal = (Button) viewDialog.findViewById(R.id.btn_batal);
+        final Button btnSimpan = (Button) viewDialog.findViewById(R.id.btn_simpan);
+
+        final AlertDialog alert = builder.create();
+        alert.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
+
+        btnBatal.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view2) {
+
+                if(alert != null){
+
+                    try {
+                        alert.dismiss();
+                    }catch (Exception e){
+                        e.printStackTrace();
+                    }
+                }
+            }
+        });
+
+        btnSimpan.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+
+                if(edtKeterangan.getText().toString().isEmpty()){
+
+                    edtKeterangan.setError("Keterangan harap diisi");
+                    edtKeterangan.requestFocus();
+                    return;
+                }else{
+                    edtKeterangan.setError(null);
+                }
+
+                // Post params to be sent to the server
+                SessionManager session = new SessionManager(TrxKunciActivity.this);
+
+                HashMap<String, String> params = new HashMap<String, String>();
+                params.put("id_transaksi", sId);
+                params.put("id_user", session.getID());
+                params.put("jenis", "kunci");
+                params.put("alasan", edtKeterangan.getText().toString());
+
+                JsonObjectRequest request_json = new JsonObjectRequest(ConfigLink.savePembatalanOrder, new JSONObject(params),
+                        new Response.Listener<JSONObject>() {
+                            @Override
+                            public void onResponse(JSONObject response) {
+
+                                try {
+                                    String status = response.getString("status");
+                                    String message = response.getString("message");
+                                    if(status.equals("success")){
+
+                                        Toast.makeText(TrxKunciActivity.this, message, Toast.LENGTH_LONG).show();
+                                        userCancelTransaction();
+                                    }
+                                } catch (JSONException e) {
+                                    e.printStackTrace();
+                                }
+                            }
+                        }, new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        //loading.dismiss();
+                        //VolleyLog.e("Err Volley: ", error.getMessage());
+                        error.printStackTrace();
+                        String message = null;
+                        if (error instanceof NetworkError) {
+                            message = "Tidak ada koneksi Internet";
+                        } else if (error instanceof ServerError) {
+                            message = "Server tidak ditemukan";
+                        } else if (error instanceof AuthFailureError) {
+                            message = "Tidak ada koneksi Internet";
+                        } else if (error instanceof ParseError) {
+                            message = "Parsing data Error";
+                        } else if (error instanceof TimeoutError) {
+                            message = "Connection TimeOut";
+                        }
+                        Toast.makeText(getApplicationContext(),message, Toast.LENGTH_LONG).show();
+                    }
+                }){
+                    @Override
+                    public Map<String, String> getHeaders() throws AuthFailureError {
+                        Map<String, String> params = new HashMap<String, String>();
+                        params.put("Authorization", "Bearer "+tokennyaUser);
+                        return params;
+                    }
+                };
+
+                int socketTimeout = 20000; //20 detik
+                RetryPolicy policy = new DefaultRetryPolicy(socketTimeout,
+                        DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
+                        DefaultRetryPolicy.DEFAULT_BACKOFF_MULT);
+                request_json.setRetryPolicy(policy);
+                RequestHandler.getInstance(TrxKunciActivity.this).addToRequestQueue(request_json);
+            }
+        });
+
+        try {
+            alert.show();
+        }catch (Exception e){
+            e.printStackTrace();
+        }
     }
 
     private void dialogDetail(){
@@ -572,7 +694,6 @@ public class TrxKunciActivity extends AppCompatActivity implements OnMapReadyCal
         window.setAttributes(wlp);
 
         dialog.show();
-
 
         TextView tLayananKunci = dialog.findViewById(R.id.labelLayananKunciDialog);
         tLayananKunci.setText(sDialogLayananKunci);

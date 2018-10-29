@@ -20,6 +20,8 @@
 
     <color name="color_grey">#414143</color>
     <color name="color_grey_white">#b3b3b7</color>
+    <color name="color_red">#e25b4e</color>
+    <color name="color_red_active">#d43425</color>
     <color name="color_yellow">#f0f633</color>
     <color name="color_yellow_active">#d1d706</color>
     <color name="color_white">#ffffff</color>
