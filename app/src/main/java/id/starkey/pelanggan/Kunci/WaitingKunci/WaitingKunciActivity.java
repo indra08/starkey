@@ -2,12 +2,17 @@ package id.starkey.pelanggan.Kunci.WaitingKunci;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.drawable.ColorDrawable;
+import android.net.Uri;
 import android.os.Handler;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.WindowManager;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.Toast;
 
@@ -108,7 +113,6 @@ public class WaitingKunciActivity extends AppCompatActivity implements View.OnCl
     public void onClick(View v) {
         if (v == iCancel){
             userCancelTransaction();
-            finish();
         }
     }
 
@@ -177,10 +181,8 @@ public class WaitingKunciActivity extends AppCompatActivity implements View.OnCl
                                 sIdTransaksi = idnyatrans;
                                 //Log.d("tangkapid", idnyatrans);
                             } else {
-                                //String konStatus = response.getString("status");
-                                String msg = response.getString("message");
-                                //Toast.makeText(LoginActivity.this, msg, Toast.LENGTH_SHORT).show();
-                                Toast.makeText(WaitingKunciActivity.this, "Gagal mendapatkan mitra", Toast.LENGTH_SHORT).show();
+
+                                showDialogBatal();
                             }
                         } catch (JSONException e) {
                             e.printStackTrace();
@@ -226,6 +228,52 @@ public class WaitingKunciActivity extends AppCompatActivity implements View.OnCl
         RequestHandler.getInstance(this).addToRequestQueue(request_json);
     }
 
+    private void showDialogBatal() {
+
+        final AlertDialog.Builder builder = new AlertDialog.Builder(WaitingKunciActivity.this);
+        LayoutInflater inflater = (LayoutInflater) getSystemService(LAYOUT_INFLATER_SERVICE);
+        View viewDialog = inflater.inflate(R.layout.dialog_cs, null);
+        builder.setView(viewDialog);
+        builder.setCancelable(false);
+
+        final Button btnHubungi = (Button) viewDialog.findViewById(R.id.btn_hubungi);
+        final ImageView ivCancel = (ImageView) viewDialog.findViewById(R.id.iv_cancel);
+
+        final AlertDialog alert = builder.create();
+        alert.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
+
+        ivCancel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view2) {
+
+                if(alert != null){
+
+                    try {
+                        alert.dismiss();
+                        userCancelTransaction();
+                    }catch (Exception e){
+                        e.printStackTrace();
+                    }
+                }
+            }
+        });
+
+        btnHubungi.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("http://wa.me/62081225020606"));
+                startActivity(browserIntent);
+            }
+        });
+
+        try {
+            alert.show();
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+    }
+
     private void userCancelTransaction(){
         // Post params to be sent to the server
         HashMap<String, String> params = new HashMap<String, String>();
@@ -241,39 +289,7 @@ public class WaitingKunciActivity extends AppCompatActivity implements View.OnCl
                     public void onResponse(JSONObject response) {
                         String hasil = response.toString();
                         Log.d("hasilcancel", hasil);
-                        //try {
-
-                            //Process os success response
-                            //String konStatus = response.getString("status");
-                           // if (konStatus.equals("success")){
-                                //String cobatoken = response.getString("token");
-
-                                /*
-                                JSONObject dataJO = new JSONObject();
-                                dataJO = response.getJSONObject("data");
-                                String id = dataJO.getString("id");
-                                String nama = dataJO.getString("first_name");
-                                String namablkg = dataJO.getString("last_name");
-                                String phone = dataJO.getString("phone");
-                                String email = dataJO.getString("email");
-                                String token = dataJO.getString("token");
-                                 */
-
-
-                                //Intent intent = new Intent(LoginActivity.this, MainActivity.class);
-                                //startActivity(intent);
-                                //finish();
-                                //Toast.makeText(WaitingKunciActivity.this, "Sukses mendapatkan mitra", Toast.LENGTH_SHORT).show();
-
-                            //} else {
-                                //String konStatus = response.getString("status");
-                                //String msg = response.getString("message");
-                                //Toast.makeText(LoginActivity.this, msg, Toast.LENGTH_SHORT).show();
-                                //Toast.makeText(WaitingKunciActivity.this, "Gagal mendapatkan mitra", Toast.LENGTH_SHORT).show();
-                           // }
-                        //} catch (JSONException e) {
-                        //    e.printStackTrace();
-                        //}
+                        finish();
                     }
                 }, new Response.ErrorListener() {
             @Override

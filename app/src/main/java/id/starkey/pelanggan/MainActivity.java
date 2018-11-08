@@ -445,7 +445,7 @@ public class MainActivity extends AppCompatActivity
         super.onResume();
         //checkGPS();
         locationAccessChecker();
-        checkVersion();
+        //checkVersion();
 
         if(isBatalByMitra){
             isBatalByMitra = false;

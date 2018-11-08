@@ -5,7 +5,7 @@ android {
         config {
             keyAlias 'starkeydevelopment'
             keyPassword 'starkey.id12'
-            storeFile file('E:/7. PROJEK/CV.EZATECH/STARKEY [Mobile]/Develop Apps/StarKey/Allkeys/starkeycustomerkeystore.jks')
+            storeFile file('E:/Project/EzaTech/StarKey/Allkeys/starkeycustomerkeystore.jks')
             storePassword '@starkey.id12'
         }
     }
@@ -14,8 +14,8 @@ android {
         applicationId "id.starkey.pelanggan"
         minSdkVersion 16
         targetSdkVersion 26
-        versionCode 7
-        versionName "0.0.18"
+        versionCode 8
+        versionName "1.1.0"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
         multiDexEnabled true
     }
@@ -24,7 +24,6 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
             debuggable false
             signingConfig signingConfigs.config
-            versionNameSuffix '1.0.0'
         }
     }
     configurations {
