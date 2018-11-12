@@ -49,7 +49,8 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="30dp"
                 android:textColor="@color/color_white2"
-                android:text="Mohon maaf kami belum dapat menyiapkan mitra yang tepat untuk anda. Tapi tidak perlu khawatir, anda tetap dapat menghubungi kami dengan menekan tautan dibawah ini."
+                android:id="@+id/tv_keterangan"
+                android:text=""
                 android:gravity="center"/>
 
             <LinearLayout

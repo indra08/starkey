@@ -14,12 +14,14 @@ import android.view.View;
 import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.android.volley.AuthFailureError;
 import com.android.volley.DefaultRetryPolicy;
 import com.android.volley.NetworkError;
 import com.android.volley.ParseError;
+import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.RetryPolicy;
 import com.android.volley.ServerError;
@@ -33,6 +35,7 @@ import id.starkey.pelanggan.RequestHandler;
 
 import id.starkey.pelanggan.R;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -50,6 +53,7 @@ public class WaitingKunciActivity extends AppCompatActivity implements View.OnCl
     private double latitude, longitude;
     private String sIdLayananKunci, sIdKunci, sQty, sKet, sBiayaEstimasi, sImageString, sIdTransaksi;
     private int iBiayaEstimasi;
+    private String noWa = "", linkWa = "";
 
     //to kill from other
     static WaitingKunciActivity waitingKunciActivity;
@@ -230,48 +234,111 @@ public class WaitingKunciActivity extends AppCompatActivity implements View.OnCl
 
     private void showDialogBatal() {
 
-        final AlertDialog.Builder builder = new AlertDialog.Builder(WaitingKunciActivity.this);
-        LayoutInflater inflater = (LayoutInflater) getSystemService(LAYOUT_INFLATER_SERVICE);
-        View viewDialog = inflater.inflate(R.layout.dialog_cs, null);
-        builder.setView(viewDialog);
-        builder.setCancelable(false);
+        HashMap<String, String> params = new HashMap<String, String>();
 
-        final Button btnHubungi = (Button) viewDialog.findViewById(R.id.btn_hubungi);
-        final ImageView ivCancel = (ImageView) viewDialog.findViewById(R.id.iv_cancel);
+        JsonObjectRequest request_json = new JsonObjectRequest(Request.Method.GET ,ConfigLink.getWACS, new JSONObject(params),
+                new Response.Listener<JSONObject>() {
+                    @Override
+                    public void onResponse(JSONObject response) {
 
-        final AlertDialog alert = builder.create();
-        alert.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
+                        try {
 
-        ivCancel.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view2) {
+                            String status = response.getString("status");
+                            if(status.equals("success")){
 
-                if(alert != null){
+                                JSONArray ja = response.getJSONArray("data");
+                                if(ja.length() > 0){
 
-                    try {
-                        alert.dismiss();
-                        userCancelTransaction();
-                    }catch (Exception e){
-                        e.printStackTrace();
+                                    JSONObject jo = ja.getJSONObject(0);
+
+                                    noWa = jo.getString("nomor_wa");
+                                    linkWa = jo.getString("link_wa");
+
+                                    final AlertDialog.Builder builder = new AlertDialog.Builder(WaitingKunciActivity.this);
+                                    LayoutInflater inflater = (LayoutInflater) getSystemService(LAYOUT_INFLATER_SERVICE);
+                                    View viewDialog = inflater.inflate(R.layout.dialog_cs, null);
+                                    builder.setView(viewDialog);
+                                    builder.setCancelable(false);
+
+                                    final Button btnHubungi = (Button) viewDialog.findViewById(R.id.btn_hubungi);
+                                    final ImageView ivCancel = (ImageView) viewDialog.findViewById(R.id.iv_cancel);
+                                    final TextView tvKeterangan = (TextView) viewDialog.findViewById(R.id.tv_keterangan);
+
+                                    final AlertDialog alert = builder.create();
+                                    alert.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
+
+                                    tvKeterangan.setText("Mohon maaf kami belum dapat menyiapkan mitra yang tepat untuk anda. Tapi tidak perlu khawatir, anda tetap dapat menghubungi kami dengan menekan tautan dibawah ini atau hubungi "+noWa+".");
+
+                                    ivCancel.setOnClickListener(new View.OnClickListener() {
+                                        @Override
+                                        public void onClick(View view2) {
+
+                                            if(alert != null){
+
+                                                try {
+                                                    alert.dismiss();
+                                                    userCancelTransaction();
+                                                }catch (Exception e){
+                                                    e.printStackTrace();
+                                                }
+                                            }
+                                        }
+                                    });
+
+                                    btnHubungi.setOnClickListener(new View.OnClickListener() {
+                                        @Override
+                                        public void onClick(View view) {
+
+                                            if(!linkWa.toLowerCase().contains("http://") && !linkWa.toLowerCase().contains("https://")) linkWa = "http://"+linkWa;
+                                            Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(linkWa));
+                                            startActivity(browserIntent);
+                                        }
+                                    });
+
+                                    try {
+                                        alert.show();
+                                    }catch (Exception e){
+                                        e.printStackTrace();
+                                    }
+
+                                }
+                            }
+
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
                     }
-                }
-            }
-        });
-
-        btnHubungi.setOnClickListener(new View.OnClickListener() {
+                }, new Response.ErrorListener() {
             @Override
-            public void onClick(View view) {
+            public void onErrorResponse(VolleyError error) {
 
-                Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("http://wa.me/62081225020606"));
-                startActivity(browserIntent);
+                //VolleyLog.e("Err Volley: ", error.getMessage());
+                //error.printStackTrace();
+                String message = null;
+                if (error instanceof NetworkError) {
+                    message = "Tidak ada koneksi Internet";
+                } else if (error instanceof ServerError) {
+                    message = "Server tidak ditemukan";
+                } else if (error instanceof AuthFailureError) {
+                    message = "Tidak ada koneksi Internet";
+                } else if (error instanceof ParseError) {
+                    message = "Parsing data Error";
+                } else if (error instanceof TimeoutError) {
+                    message = "Connection TimeOut";
+                }
+                Toast.makeText(getApplicationContext(),message, Toast.LENGTH_LONG).show();
             }
         });
 
-        try {
-            alert.show();
-        }catch (Exception e){
-            e.printStackTrace();
-        }
+        int socketTimeout = 30000; //30 detik
+        RetryPolicy policy = new DefaultRetryPolicy(socketTimeout,
+                DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
+                DefaultRetryPolicy.DEFAULT_BACKOFF_MULT);
+        // add the request object to the queue to be executed
+        //RequestQueue requestQueue = Volley.newRequestQueue(this);
+        //requestQueue.add(request_json);
+        request_json.setRetryPolicy(policy);
+        RequestHandler.getInstance(this).addToRequestQueue(request_json);
     }
 
     private void userCancelTransaction(){
