@@ -39,6 +39,8 @@
                 android:padding="2dp"
                 android:textColor="@color/colorPutih"
                 android:textColorHint="@color/colorPutih"
+                android:inputType="phone"
+                android:imeOptions="actionNext"
                 android:textSize="22sp"
                 android:maxLines="1"
                 android:lines="1"
