@@ -12,6 +12,7 @@ import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.ActionMode;
 import android.view.Gravity;
 import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
@@ -44,6 +45,7 @@ import id.starkey.pelanggan.MainActivity;
 import id.starkey.pelanggan.R;
 import id.starkey.pelanggan.Ratting.RattingActivity;
 import id.starkey.pelanggan.RequestHandler;
+import id.starkey.pelanggan.Utilities.ItemValidation;
 import id.starkey.pelanggan.Utilities.SessionManager;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
@@ -91,7 +93,10 @@ public class TrxKunciActivity extends AppCompatActivity implements OnMapReadyCal
 
     NumberFormat rupiahFormat;
     String Rupiah = "Rp.";
+    private static boolean isActive = true;
+
     public static int mitraState = 0;
+    private ItemValidation iv = new ItemValidation();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -201,7 +206,8 @@ public class TrxKunciActivity extends AppCompatActivity implements OnMapReadyCal
         trxKunciActivity = this;
 
         //start interval
-        h.postDelayed(new Runnable() {
+        isActive = true;
+        /*h.postDelayed(new Runnable() {
             public void run() {
                 //do something
 
@@ -209,7 +215,7 @@ public class TrxKunciActivity extends AppCompatActivity implements OnMapReadyCal
                 h.postDelayed(runnable, delay);
                 statusTransaksiKunci(sId);
             }
-        }, delay);
+        }, delay);*/
 
         //get token id user from preference
         getPref();
@@ -217,6 +223,24 @@ public class TrxKunciActivity extends AppCompatActivity implements OnMapReadyCal
         statusTransaksiKunci(sId);
 
         mitraState = 0;
+    }
+
+    @Override
+    protected void onResume() {
+        isActive = true;
+        super.onResume();
+    }
+
+    @Override
+    protected void onDestroy() {
+        isActive = false;
+        super.onDestroy();
+    }
+
+    @Override
+    public void onActionModeFinished(ActionMode mode) {
+        isActive = false;
+        super.onActionModeFinished(mode);
     }
 
     public static TrxKunciActivity getInstance(){
@@ -228,7 +252,7 @@ public class TrxKunciActivity extends AppCompatActivity implements OnMapReadyCal
         tokennyaUser = custDetails.getString("tokenIdUser", "");
     }
 
-    private void statusTransaksiKunci(String idTrans){
+    private void statusTransaksiKunci(final String idTrans){
 
         progressBar.setIndeterminate(true);
         progressBar.setVisibility(View.VISIBLE);
@@ -280,6 +304,8 @@ public class TrxKunciActivity extends AppCompatActivity implements OnMapReadyCal
                         } catch (JSONException e) {
                             e.printStackTrace();
                         }
+
+                        if(isActive)statusTransaksiKunci(idTrans);
                     }
                 }, new Response.ErrorListener() {
             @Override
@@ -303,6 +329,8 @@ public class TrxKunciActivity extends AppCompatActivity implements OnMapReadyCal
                     message = "Connection TimeOut";
                 }
                 Toast.makeText(TrxKunciActivity.this,message, Toast.LENGTH_LONG).show();
+
+                if(isActive) statusTransaksiKunci(idTrans);
             }
         }){
             @Override
@@ -313,7 +341,7 @@ public class TrxKunciActivity extends AppCompatActivity implements OnMapReadyCal
             }
         };
 
-        int socketTimeout = 30000; //30 detik
+        int socketTimeout = 20000; //30 detik
         RetryPolicy policy = new DefaultRetryPolicy(socketTimeout,
                 DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
                 DefaultRetryPolicy.DEFAULT_BACKOFF_MULT);
@@ -323,7 +351,6 @@ public class TrxKunciActivity extends AppCompatActivity implements OnMapReadyCal
         request_json.setRetryPolicy(policy);
         RequestHandler.getInstance(this).addToRequestQueue(request_json);
     }
-
 
     private void getEstimasiWaktu(double latiUser, double longiUser, double latiMitra, double longiMitra) {
         //String urlMatrix = "https://maps.googleapis.com/maps/api/distancematrix/json?units=metric&origins=-7.01629,110.4631213&destinations=-7.039751,110.491264&key=AIzaSyD-N1rB8rGBmP_f2koq8bjdMTjYRLqBjwk";
@@ -365,6 +392,114 @@ public class TrxKunciActivity extends AppCompatActivity implements OnMapReadyCal
         requestQueue.add(stringRequest);
     }
 
+    private void cekStatusBeforeCancaled(final String idTrans, final String keterangan){
+
+        progressBar.setIndeterminate(true);
+        progressBar.setVisibility(View.VISIBLE);
+
+//        String STATUS_TRX_KUNCI = "https://api.starkey.id/api/status_transaksi_kunci/"+idTrans; //url api lama
+        String STATUS_TRX_KUNCI = "https://api.starkey.id/api/v1.1/status_transaksi_kunci/"+idTrans;
+
+        // Post params to be sent to the server
+        HashMap<String, String> params = new HashMap<String, String>();
+        //params.put("lat", latnya);
+        //params.put("long", lngnya);
+        //params.put("available", avail);
+
+        JsonObjectRequest request_json = new JsonObjectRequest(Request.Method.GET, STATUS_TRX_KUNCI, new JSONObject(params),
+                new Response.Listener<JSONObject>() {
+                    @Override
+                    public void onResponse(JSONObject response) {
+
+                        Log.d("trxkunci", response.toString());
+                        String statusCode = "0";
+                        try {
+                            //Process os success response
+
+                            JSONObject joData = response.getJSONObject("data");
+                            statusCode = joData.getString("status_code");;
+                            String statusname = joData.getString("status_name");
+                            String mitraLat = joData.getString("mitra_lat");
+                            String mitraLng = joData.getString("mitra_long");
+                            sDialogTotal = joData.getString("total_awal");
+                            sDialogJasa = joData.getString("biaya_antar");
+                            sDialogTips = joData.getString("tips");
+                            sDialogBiayaLain = joData.getString("biaya_lain");
+                            sDialogGrandTotal = joData.getString("total_akhir");
+
+                            tStatusName.setText(statusname);
+                            if (tStatusName.getText().toString().equals("menuju lokasi")){
+                                mitraState = 2;
+                                //iCancelTrx.setEnabled(false);
+                            }
+                            if (tStatusName.getText().toString().equals("sampai lokasi")){
+                                tEstWaktu.setVisibility(View.INVISIBLE);
+                            }
+                            latMitraTracking = Double.parseDouble(mitraLat);
+                            lngMitraTracking = Double.parseDouble(mitraLng);
+
+                            progressBar.setIndeterminate(false);
+                            progressBar.setVisibility(View.INVISIBLE);
+                            //Toast.makeText(MainActivity.this, hasil, Toast.LENGTH_SHORT).show();
+                            trackPositionMitra(latMitraTracking, lngMitraTracking);
+                            //getEstimasiWaktu(userLat, userLng, mitraLat, mitraLng);
+                            getEstimasiWaktu(userLat, userLng, latMitraTracking, lngMitraTracking);
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+
+                        if(iv.parseNullInteger(statusCode) <= 2){
+
+                            doCancelTransaction(keterangan);
+                        }else{
+
+                            Toast.makeText(TrxKunciActivity.this, "Maaf pesanan tidak dapat dibatalkan, karena sales " +tStatusName.getText().toString(), Toast.LENGTH_LONG).show();
+                        }
+                    }
+                }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                //loading.dismiss();
+                //VolleyLog.e("Err Volley: ", error.getMessage());
+                error.printStackTrace();
+                progressBar.setIndeterminate(false);
+                progressBar.setVisibility(View.INVISIBLE);
+
+                String message = null;
+                if (error instanceof NetworkError) {
+                    message = "Tidak ada koneksi Internet";
+                } else if (error instanceof ServerError) {
+                    message = "Server tidak ditemukan";
+                } else if (error instanceof AuthFailureError) {
+                    message = "Tidak ada koneksi Internet";
+                } else if (error instanceof ParseError) {
+                    message = "Parsing data Error";
+                } else if (error instanceof TimeoutError) {
+                    message = "Connection TimeOut";
+                }
+                Toast.makeText(TrxKunciActivity.this,message, Toast.LENGTH_LONG).show();
+
+            }
+        }){
+            @Override
+            public Map<String, String> getHeaders() throws AuthFailureError {
+                Map<String, String> params = new HashMap<String, String>();
+                params.put("Authorization", "Bearer "+tokennyaUser);
+                return params;
+            }
+        };
+
+        int socketTimeout = 20000; //30 detik
+        RetryPolicy policy = new DefaultRetryPolicy(socketTimeout,
+                DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
+                DefaultRetryPolicy.DEFAULT_BACKOFF_MULT);
+        // add the request object to the queue to be executed
+        //RequestQueue requestQueue = Volley.newRequestQueue(this);
+        //requestQueue.add(request_json);
+        request_json.setRetryPolicy(policy);
+        RequestHandler.getInstance(this).addToRequestQueue(request_json);
+    }
+
     private void userCancelTransaction(){
         // Post params to be sent to the server
         HashMap<String, String> params = new HashMap<String, String>();
@@ -378,6 +513,7 @@ public class TrxKunciActivity extends AppCompatActivity implements OnMapReadyCal
                         String hasil = response.toString();
                         Log.d("hasilcancel", hasil);
                         Intent main = new Intent(TrxKunciActivity.this, MainActivity.class);
+                        isActive = false;
                         startActivity(main);
                         finishAffinity();
                     }
@@ -608,67 +744,7 @@ public class TrxKunciActivity extends AppCompatActivity implements OnMapReadyCal
                     edtKeterangan.setError(null);
                 }
 
-                // Post params to be sent to the server
-                SessionManager session = new SessionManager(TrxKunciActivity.this);
-
-                HashMap<String, String> params = new HashMap<String, String>();
-                params.put("id_transaksi", sId);
-                params.put("id_user", session.getID());
-                params.put("jenis", "kunci");
-                params.put("alasan", edtKeterangan.getText().toString());
-
-                JsonObjectRequest request_json = new JsonObjectRequest(ConfigLink.savePembatalanOrder, new JSONObject(params),
-                        new Response.Listener<JSONObject>() {
-                            @Override
-                            public void onResponse(JSONObject response) {
-
-                                try {
-                                    String status = response.getString("status");
-                                    String message = response.getString("message");
-                                    if(status.equals("success")){
-
-                                        Toast.makeText(TrxKunciActivity.this, message, Toast.LENGTH_LONG).show();
-                                        userCancelTransaction();
-                                    }
-                                } catch (JSONException e) {
-                                    e.printStackTrace();
-                                }
-                            }
-                        }, new Response.ErrorListener() {
-                    @Override
-                    public void onErrorResponse(VolleyError error) {
-                        //loading.dismiss();
-                        //VolleyLog.e("Err Volley: ", error.getMessage());
-                        error.printStackTrace();
-                        String message = null;
-                        if (error instanceof NetworkError) {
-                            message = "Tidak ada koneksi Internet";
-                        } else if (error instanceof ServerError) {
-                            message = "Server tidak ditemukan";
-                        } else if (error instanceof AuthFailureError) {
-                            message = "Tidak ada koneksi Internet";
-                        } else if (error instanceof ParseError) {
-                            message = "Parsing data Error";
-                        } else if (error instanceof TimeoutError) {
-                            message = "Connection TimeOut";
-                        }
-                        Toast.makeText(getApplicationContext(),message, Toast.LENGTH_LONG).show();
-                    }
-                }){
-                    @Override
-                    public Map<String, String> getHeaders() throws AuthFailureError {
-                        Map<String, String> params = new HashMap<String, String>();
-                        params.put("Authorization", "Bearer "+tokennyaUser);
-                        return params;
-                    }
-                };
-
-                int socketTimeout = 20000; //20 detik
-                RetryPolicy policy = new DefaultRetryPolicy(socketTimeout,
-                        DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
-                        DefaultRetryPolicy.DEFAULT_BACKOFF_MULT);
-                request_json.setRetryPolicy(policy);
-                RequestHandler.getInstance(TrxKunciActivity.this).addToRequestQueue(request_json);
+                cekStatusBeforeCancaled(sId, edtKeterangan.getText().toString());
             }
         });
 
@@ -677,6 +753,72 @@ public class TrxKunciActivity extends AppCompatActivity implements OnMapReadyCal
         }catch (Exception e){
             e.printStackTrace();
         }
+    }
+
+    private void doCancelTransaction(String keterangan){
+
+        // Post params to be sent to the server
+        SessionManager session = new SessionManager(TrxKunciActivity.this);
+
+        HashMap<String, String> params = new HashMap<String, String>();
+        params.put("id_transaksi", sId);
+        params.put("id_user", session.getID());
+        params.put("jenis", "kunci");
+        params.put("alasan", keterangan);
+
+        JsonObjectRequest request_json = new JsonObjectRequest(ConfigLink.savePembatalanOrder, new JSONObject(params),
+                new Response.Listener<JSONObject>() {
+                    @Override
+                    public void onResponse(JSONObject response) {
+
+                        try {
+                            String status = response.getString("status");
+                            String message = response.getString("message");
+                            if(status.equals("success")){
+
+                                userCancelTransaction();
+                            }
+                            Toast.makeText(TrxKunciActivity.this, message, Toast.LENGTH_LONG).show();
+
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                //loading.dismiss();
+                //VolleyLog.e("Err Volley: ", error.getMessage());
+                error.printStackTrace();
+                String message = null;
+                if (error instanceof NetworkError) {
+                    message = "Tidak ada koneksi Internet";
+                } else if (error instanceof ServerError) {
+                    message = "Server tidak ditemukan";
+                } else if (error instanceof AuthFailureError) {
+                    message = "Tidak ada koneksi Internet";
+                } else if (error instanceof ParseError) {
+                    message = "Parsing data Error";
+                } else if (error instanceof TimeoutError) {
+                    message = "Connection TimeOut";
+                }
+                Toast.makeText(getApplicationContext(),message, Toast.LENGTH_LONG).show();
+            }
+        }){
+            @Override
+            public Map<String, String> getHeaders() throws AuthFailureError {
+                Map<String, String> params = new HashMap<String, String>();
+                params.put("Authorization", "Bearer "+tokennyaUser);
+                return params;
+            }
+        };
+
+        int socketTimeout = 20000; //20 detik
+        RetryPolicy policy = new DefaultRetryPolicy(socketTimeout,
+                DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
+                DefaultRetryPolicy.DEFAULT_BACKOFF_MULT);
+        request_json.setRetryPolicy(policy);
+        RequestHandler.getInstance(TrxKunciActivity.this).addToRequestQueue(request_json);
     }
 
     private void dialogDetail(){

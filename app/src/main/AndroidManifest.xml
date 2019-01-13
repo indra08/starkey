@@ -16,7 +16,7 @@
     <uses-permission android:name="android.permission.CHANGE_NETWORK_STATE" />
     <uses-permission android:name="android.permission.ACCESS_ASSISTED_GPS" />
     <uses-permission android:name="android.permission.WAKE_LOCK" />
-    <!--<uses-permission android:name="android.permission.WRITE_SETTINGS" />-->
+    <!-- <uses-permission android:name="android.permission.WRITE_SETTINGS" /> -->
     <!-- for sms -->
     <uses-permission android:name="android.permission.RECEIVE_SMS" />
     <uses-permission android:name="android.permission.READ_SMS" />
@@ -190,9 +190,20 @@
         <activity
             android:name=".LiveRatting.LiveRattingActivity"
             android:screenOrientation="portrait" />
-        <activity android:name=".Stempel.EnlargeImgStempel.EnlargeImgStempelActivity" />
-        <activity android:name=".InfoTerbaru.InfoTerbaruActivity" />
-        <activity android:name=".OMCustomerService.OMCustomerService"></activity>
+        <activity
+            android:name=".Stempel.EnlargeImgStempel.EnlargeImgStempelActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".InfoTerbaru.InfoTerbaruActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".OMCustomerService.OMCustomerService"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".HomeMenuJasaLain.KategoriJasaLain"
+            android:screenOrientation="portrait" />
+        <activity android:name=".HomeMenuJasaLain.TokoPerKategori"
+            android:screenOrientation="portrait"></activity>
     </application>
 
 </manifest>

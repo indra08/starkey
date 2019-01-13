@@ -5,41 +5,51 @@
     android:layout_height="match_parent"
     android:background="@color/background_activity">
 
-    <LinearLayout
+    <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical"
-        android:paddingLeft="20dp"
-        android:paddingRight="20dp"
-        android:paddingTop="20dp">
+        android:scrollbars="none">
 
-        <ImageView
-            android:id="@+id/btnKunci"
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="18dp"
-            android:layout_marginBottom="20dp"
-            android:layout_weight="1"
-            android:scaleType="centerCrop"
-            android:src="@drawable/ic_home_menukunci_new" />
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:gravity="center_horizontal"
+            android:layout_margin="@dimen/margin_default"
+            android:weightSum="3">
 
-        <ImageView
-            android:id="@+id/btnStempel"
-            android:layout_width="match_parent"
-            android:layout_height="18dp"
-            android:layout_marginBottom="20dp"
-            android:layout_weight="1"
-            android:src="@drawable/ic_home_stempelbeta" />
+            <ImageView
+                android:id="@+id/btnKunci"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/menu_height"
+                android:scaleType="fitXY"
+                android:layout_marginBottom="@dimen/margin_default"
+                android:src="@drawable/ic_home_menukunci_new" />
 
-        <ImageView
-            android:id="@+id/btnLaundry"
-            android:layout_width="match_parent"
-            android:layout_height="18dp"
-            android:layout_marginBottom="20dp"
-            android:layout_weight="1"
-            android:scaleType="centerCrop"
-            android:src="@drawable/ic_comingsoon"
-            android:visibility="invisible"/>
+            <ImageView
+                android:id="@+id/btnStempel"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/menu_height"
+                android:scaleType="fitXY"
+                android:layout_marginBottom="@dimen/margin_default"
+                android:src="@drawable/ic_home_stempelbeta" />
 
-    </LinearLayout>
+            <ImageView
+                android:id="@+id/btnJasaLain"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/menu_height"
+                android:scaleType="fitXY"
+                android:src="@drawable/ic_jasa_lain" />
 
+            <ImageView
+                android:id="@+id/btnLaundry"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                android:scaleType="fitXY"
+                android:src="@drawable/ic_comingsoon"
+                android:visibility="gone"/>
+
+        </LinearLayout>
+    </ScrollView>
 </RelativeLayout>

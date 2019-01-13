@@ -30,6 +30,9 @@ import com.android.volley.ServerError;
 import com.android.volley.TimeoutError;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
+import com.google.firebase.FirebaseApp;
+import com.google.firebase.iid.FirebaseInstanceId;
+
 import id.starkey.pelanggan.ConfigLink;
 import id.starkey.pelanggan.Daftar.InputHpActivity;
 import id.starkey.pelanggan.Firebase.MyFirebaseInstanceIdService;
@@ -75,7 +78,12 @@ public class LoginActivity extends RuntimePermissionsActivity implements View.On
             @Override
             public void onReceive(Context context, Intent intent) {
 
-                tampungToken.setText(SharedPrefManager.getInstance(LoginActivity.this).getToken());
+                try {
+                    tampungToken.setText(SharedPrefManager.getInstance(LoginActivity.this).getToken());
+
+                }catch (Exception e){
+                    e.printStackTrace();
+                }
                 loadToken.dismiss();
             }
         };
@@ -86,7 +94,21 @@ public class LoginActivity extends RuntimePermissionsActivity implements View.On
             Log.d("JALTOKENBRO",SharedPrefManager.getInstance(this).getToken());
         }
 
-        registerReceiver(broadcastReceiver, new IntentFilter(MyFirebaseInstanceIdService.TOKEN_BROADCAST));
+        FirebaseApp.initializeApp(context);
+
+        try {
+
+            unregisterReceiver(broadcastReceiver);
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+
+        try {
+
+            registerReceiver(broadcastReceiver, new IntentFilter(MyFirebaseInstanceIdService.TOKEN_BROADCAST));
+        }catch (Exception e){
+            e.printStackTrace();
+        }
 
         if (ContextCompat.checkSelfPermission(
                 context, android.Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED || ContextCompat.checkSelfPermission(
@@ -134,6 +156,10 @@ public class LoginActivity extends RuntimePermissionsActivity implements View.On
 
     }
 
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+    }
 
     @Override
     public void onClick(View v) {

@@ -13,6 +13,7 @@ import android.location.Criteria;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
+import android.media.Image;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
@@ -61,6 +62,7 @@ import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 
 import id.starkey.pelanggan.ConfigLink;
+import id.starkey.pelanggan.HomeMenuJasaLain.KategoriJasaLain;
 import id.starkey.pelanggan.Kunci.TrxKunci.TrxKunciActivity;
 import id.starkey.pelanggan.Login.LoginActivity;
 import id.starkey.pelanggan.Maps.MapsActivity;
@@ -82,6 +84,8 @@ import static android.content.Context.MODE_PRIVATE;
  */
 
 public class FragmentHome extends Fragment implements View.OnClickListener, LocationListener {
+
+    private ImageView btnJasaLain;
 
     public FragmentHome(){}
 
@@ -137,12 +141,12 @@ public class FragmentHome extends Fragment implements View.OnClickListener, Loca
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         vMenu = inflater.inflate(R.layout.fragment_home, container, false);
-        mContext = getActivity();
+        mContext = getContext();
 
         isActive = true;
 
-        if (ActivityCompat.checkSelfPermission(getActivity(), android.Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(mContext, android.Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-            ActivityCompat.requestPermissions(getActivity(), new String[]{android.Manifest.permission.ACCESS_FINE_LOCATION}, 1);
+        if (ActivityCompat.checkSelfPermission(mContext, android.Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(mContext, android.Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions((Activity) mContext, new String[]{android.Manifest.permission.ACCESS_FINE_LOCATION}, 1);
 
         } else {
 
@@ -174,6 +178,8 @@ public class FragmentHome extends Fragment implements View.OnClickListener, Loca
         bKunci = vMenu.findViewById(R.id.btnKunci);
         bLaundry = vMenu.findViewById(R.id.btnLaundry);
         bStempel = vMenu.findViewById(R.id.btnStempel);
+        btnJasaLain = (ImageView) vMenu.findViewById(R.id.btnJasaLain);
+
         bKunci.setOnClickListener(this);
         bLaundry.setOnClickListener(this);
         bStempel.setOnClickListener(this);
@@ -193,17 +199,35 @@ public class FragmentHome extends Fragment implements View.OnClickListener, Loca
             }
         }, delay);
 
+        initUI();
+
         return vMenu;
     }
 
+    private void initUI() {
+
+        btnJasaLain.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                Intent intent = new Intent(mContext, KategoriJasaLain.class);
+                String sLat = String.valueOf(latPerm);
+                String sLng = String.valueOf(lngPerm);
+                intent.putExtra("lat", sLat);
+                intent.putExtra("lng", sLng);
+                startActivity(intent);
+            }
+        });
+    }
+
     private void getPref() {
-        SharedPreferences custDetails = getActivity().getSharedPreferences(ConfigLink.loginPref, MODE_PRIVATE);
+        SharedPreferences custDetails = mContext.getSharedPreferences(ConfigLink.loginPref, MODE_PRIVATE);
         tokennyaUser = custDetails.getString("tokenIdUser", "");
     }
 
     private void getFirebaseToken(){
         //SharedPreferences custDetails = getSharedPreferences(ConfigLink.loginPref, MODE_PRIVATE);
-        SharedPreferences tokenfirebaseuser = getActivity().getSharedPreferences(ConfigLink.firebasePref, MODE_PRIVATE);
+        SharedPreferences tokenfirebaseuser = mContext.getSharedPreferences(ConfigLink.firebasePref, MODE_PRIVATE);
         sFirebaseToken = tokenfirebaseuser.getString("firebaseUser", "");
     }
 
@@ -218,7 +242,7 @@ public class FragmentHome extends Fragment implements View.OnClickListener, Loca
     public void onClick(View view) {
         if (view == bKunci){
             //Toast.makeText(getActivity(), "Kunci", Toast.LENGTH_SHORT).show();
-            Intent intent = new Intent(getActivity(), MapsActivity.class);
+            Intent intent = new Intent(mContext, MapsActivity.class);
             String sLat = String.valueOf(latPerm);
             String sLng = String.valueOf(lngPerm);
             intent.putExtra("parBtn","Kunci");
@@ -226,7 +250,7 @@ public class FragmentHome extends Fragment implements View.OnClickListener, Loca
             intent.putExtra("lng", sLng);
             startActivity(intent);
         } else if (view == bLaundry){
-            Toast.makeText(getActivity(), "Laundry still under construction", Toast.LENGTH_SHORT).show();
+            Toast.makeText(mContext, "Laundry still under construction", Toast.LENGTH_SHORT).show();
             /*
             Intent intent = new Intent(getActivity(), MapsActivity.class);
             String sLat = String.valueOf(latPerm);
@@ -240,7 +264,7 @@ public class FragmentHome extends Fragment implements View.OnClickListener, Loca
         } else {
             //Toast.makeText(getActivity(), "Stample still under construction", Toast.LENGTH_SHORT).show();
 
-            Intent intent = new Intent(getActivity(), MapsActivity.class);
+            Intent intent = new Intent(mContext, MapsActivity.class);
             String sLat = String.valueOf(latPerm);
             String sLng = String.valueOf(lngPerm);
             intent.putExtra("parBtn","Stempel");
@@ -251,7 +275,7 @@ public class FragmentHome extends Fragment implements View.OnClickListener, Loca
     }
 
     private void clearAttributeUser(){
-        SharedPreferences sharedPreferences = getActivity().getSharedPreferences(ConfigLink.loginPref, Context.MODE_PRIVATE);
+        SharedPreferences sharedPreferences = mContext.getSharedPreferences(ConfigLink.loginPref, Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedPreferences.edit();
         editor.clear();
         editor.commit();
@@ -287,21 +311,21 @@ public class FragmentHome extends Fragment implements View.OnClickListener, Loca
                             //Toast.makeText(mContext, hasil, Toast.LENGTH_SHORT).show();
                             if (hasil.equals("Akun tidak ditemukan")){
                                 clearAttributeUser();
-                                Intent login = new Intent(getActivity(), LoginActivity.class);
+                                Intent login = new Intent(mContext, LoginActivity.class);
                                 startActivity(login);
-                                getActivity().finish();
+                                ((Activity)mContext).finish();
                             } else if(hasil.equals("Maaf, akun anda belum diaktivasi")){ //status 0
                                 clearAttributeUser();
                                 Toast.makeText(mContext, hasil, Toast.LENGTH_SHORT).show();
-                                Intent login = new Intent(getActivity(), LoginActivity.class);
+                                Intent login = new Intent(mContext, LoginActivity.class);
                                 startActivity(login);
-                                getActivity().finish();
+                                ((Activity)mContext).finish();
                             } else if(hasil.equals("Maaf, user anda disuspend permanen")){ //status 2
                                 clearAttributeUser();
                                 Toast.makeText(mContext, hasil, Toast.LENGTH_SHORT).show();
-                                Intent login = new Intent(getActivity(), LoginActivity.class);
+                                Intent login = new Intent(mContext, LoginActivity.class);
                                 startActivity(login);
-                                getActivity().finish();
+                                ((Activity)mContext).finish();
                             } else if(hasil.equals("Akun anda belum diaktivasi")){
                                 clearAttributeUser();
                                 infoDeviceNotMatch(hasil);
@@ -339,7 +363,7 @@ public class FragmentHome extends Fragment implements View.OnClickListener, Loca
                 } else if (error instanceof TimeoutError) {
                     message = "Connection TimeOut";
                 }
-                Toast.makeText(getActivity(),message, Toast.LENGTH_LONG).show();
+                Toast.makeText(mContext, message, Toast.LENGTH_LONG).show();
             }
         }){
             @Override
@@ -358,7 +382,7 @@ public class FragmentHome extends Fragment implements View.OnClickListener, Loca
         //RequestQueue requestQueue = Volley.newRequestQueue(this);
         //requestQueue.add(request_json);
         request_json.setRetryPolicy(policy);
-        RequestHandler.getInstance(getActivity()).addToRequestQueue(request_json);
+        RequestHandler.getInstance(mContext).addToRequestQueue(request_json);
     }
 
     private void infoDeviceNotMatch(String titleMsg){
@@ -371,7 +395,7 @@ public class FragmentHome extends Fragment implements View.OnClickListener, Loca
                                 clearAttributeUser();
                                 Intent aw = new Intent(mContext, LoginActivity.class);
                                 startActivity(aw);
-                                getActivity().finish();
+                                ((Activity)mContext).finish();
                                 //turnGPSOn();
                             }
                         });
@@ -454,17 +478,17 @@ public class FragmentHome extends Fragment implements View.OnClickListener, Loca
                                 String kondisiidlayanan = joData.getString("id_layanan");
                                 if (kondisiidlayanan.equals("1")){// transaksi kunci
 
-                                    Intent toTrxKunci = new Intent(getActivity(), TrxKunciActivity.class);
+                                    Intent toTrxKunci = new Intent(mContext, TrxKunciActivity.class);
                                     toTrxKunci.putExtra("message", joData.toString());
                                     startActivity(toTrxKunci);
-                                    getActivity().finish();
+                                    ((Activity)mContext).finish();
 
                                 } else if (kondisiidlayanan.equals("2")){//transaksi stempel
 
-                                    Intent toTrxStempel = new Intent(getActivity(), TrxStempelActivity.class);
+                                    Intent toTrxStempel = new Intent(mContext, TrxStempelActivity.class);
                                     toTrxStempel.putExtra("messageStempel", joData.toString());
                                     startActivity(toTrxStempel);
-                                    getActivity().finish();
+                                    ((Activity)mContext).finish();
                                 }
 
                             } else {
@@ -495,7 +519,7 @@ public class FragmentHome extends Fragment implements View.OnClickListener, Loca
                 } else if (error instanceof TimeoutError) {
                     message = "Connection TimeOut";
                 }
-                Toast.makeText(getActivity(),message, Toast.LENGTH_LONG).show();
+                Toast.makeText(mContext ,message, Toast.LENGTH_LONG).show();
             }
         }){
             @Override
@@ -514,7 +538,7 @@ public class FragmentHome extends Fragment implements View.OnClickListener, Loca
         //RequestQueue requestQueue = Volley.newRequestQueue(this);
         //requestQueue.add(request_json);
         request_json.setRetryPolicy(policy);
-        RequestHandler.getInstance(getActivity()).addToRequestQueue(request_json);
+        RequestHandler.getInstance(mContext).addToRequestQueue(request_json);
     }
 
     //region location
