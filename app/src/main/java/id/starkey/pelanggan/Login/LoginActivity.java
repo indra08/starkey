@@ -116,10 +116,7 @@ public class LoginActivity extends RuntimePermissionsActivity implements View.On
                 context, android.Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED || ContextCompat.checkSelfPermission(
                 context, android.Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED || ContextCompat.checkSelfPermission(
                 context, android.Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED || ContextCompat.checkSelfPermission(
-                context, Manifest.permission.WAKE_LOCK) != PackageManager.PERMISSION_GRANTED || ContextCompat.checkSelfPermission(
-                context, Manifest.permission.RECEIVE_SMS) != PackageManager.PERMISSION_GRANTED || ContextCompat.checkSelfPermission(
-                context, Manifest.permission.SEND_SMS) != PackageManager.PERMISSION_GRANTED || ContextCompat.checkSelfPermission(
-                context, Manifest.permission.READ_SMS) != PackageManager.PERMISSION_GRANTED) {
+                context, Manifest.permission.WAKE_LOCK) != PackageManager.PERMISSION_GRANTED) {
 
             LoginActivity.super.requestAppPermissions(new
                             String[]{android.Manifest.permission.ACCESS_COARSE_LOCATION,
@@ -127,10 +124,7 @@ public class LoginActivity extends RuntimePermissionsActivity implements View.On
                             android.Manifest.permission.WRITE_EXTERNAL_STORAGE,
                             android.Manifest.permission.READ_EXTERNAL_STORAGE,
                             android.Manifest.permission.CAMERA,
-                            android.Manifest.permission.WAKE_LOCK,
-                            Manifest.permission.RECEIVE_SMS,
-                            Manifest.permission.SEND_SMS,
-                            Manifest.permission.READ_SMS}, R.string
+                            android.Manifest.permission.WAKE_LOCK}, R.string
                             .runtime_permissions_txt
                     , REQUEST_PERMISSIONS);
         }

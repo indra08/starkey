@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
+import android.os.CountDownTimer;
 import android.os.Handler;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
@@ -175,6 +176,23 @@ public class WaitingStempelActivity extends AppCompatActivity implements View.On
                                 JSONObject transaksidata = jodata.getJSONObject("transaksi");
                                 String idnyatrans = transaksidata.getString("id");
                                 sIdTransaksiStempel = idnyatrans;
+
+                                new CountDownTimer(2 * 60 * 1000, 1000) {
+
+                                    public void onTick(long millisUntilFinished) {
+
+                                    }
+
+                                    public void onFinish() {
+                                        runOnUiThread(new Runnable() {
+                                            @Override
+                                            public void run() {
+
+                                                showDialogBatal();
+                                            }
+                                        });
+                                    }
+                                }.start();
                                 //Log.d("tangkapid", idnyatrans);
                             } else {
 

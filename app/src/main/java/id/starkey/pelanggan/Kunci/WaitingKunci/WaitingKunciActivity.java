@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
+import android.os.CountDownTimer;
 import android.os.Handler;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
@@ -184,6 +185,23 @@ public class WaitingKunciActivity extends AppCompatActivity implements View.OnCl
                                 String idnyatrans = transaksidata.getString("id");
                                 sIdTransaksi = idnyatrans;
                                 //Log.d("tangkapid", idnyatrans);
+
+                                new CountDownTimer(2 * 60 * 1000, 1000) {
+
+                                    public void onTick(long millisUntilFinished) {
+
+                                    }
+
+                                    public void onFinish() {
+                                        runOnUiThread(new Runnable() {
+                                            @Override
+                                            public void run() {
+
+                                                showDialogBatal();
+                                            }
+                                        });
+                                    }
+                                }.start();
                             } else {
 
                                 showDialogBatal();
