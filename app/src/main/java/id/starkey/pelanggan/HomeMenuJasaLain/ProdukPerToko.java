@@ -2,6 +2,7 @@ package id.starkey.pelanggan.HomeMenuJasaLain;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.PorterDuff;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -12,6 +13,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.inputmethod.EditorInfo;
 import android.widget.AbsListView;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -38,6 +40,7 @@ public class ProdukPerToko extends AppCompatActivity {
     private boolean isLoading = false;
     private String idKategori;
     private String title;
+    private Button btnOrder;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -51,7 +54,7 @@ public class ProdukPerToko extends AppCompatActivity {
             //getSupportActionBar().setHomeAsUpIndicator(R.drawable.ic_silang);
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
             getSupportActionBar().setDisplayShowHomeEnabled(true);
-            getSupportActionBar().setTitle("Kategori Jasa");
+            getSupportActionBar().setTitle("Daftar Produk");
         }
         toolbar.getNavigationIcon().setColorFilter(getResources().getColor(R.color.black), PorterDuff.Mode.SRC_ATOP);
 
@@ -67,6 +70,7 @@ public class ProdukPerToko extends AppCompatActivity {
         edtSearch = (EditText) findViewById(R.id.edt_search);
         LayoutInflater li = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         footerList = li.inflate(R.layout.footer_list, null);
+        btnOrder = (Button) findViewById(R.id.btn_order);
 
         keyword = "";
         start = 0;
@@ -130,6 +134,15 @@ public class ProdukPerToko extends AppCompatActivity {
                 }
 
                 return false;
+            }
+        });
+
+        btnOrder.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                Intent intent = new Intent(context, DeskripsiOrder.class);
+                startActivity(intent);
             }
         });
     }

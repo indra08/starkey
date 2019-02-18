@@ -50,8 +50,10 @@
         android:roundIcon="@mipmap/ic_starkey_customer_curved"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".HomeMenuJasaLain.ProdukPerToko"
-            android:screenOrientation="portrait"></activity>
+        <activity android:name=".HomeMenuJasaLain.DeskripsiOrder"></activity>
+        <activity
+            android:name=".HomeMenuJasaLain.ProdukPerToko"
+            android:screenOrientation="portrait" />
         <activity
             android:name=".SplashScreen.SplashActivity"
             android:label="@string/app_name"

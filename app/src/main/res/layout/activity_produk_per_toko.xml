@@ -96,8 +96,10 @@
             <Button
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:minHeight="55dp"
                 android:backgroundTint="@color/btn_default"
                 android:text="Order"
+                android:id="@+id/btn_order"
                 android:layout_marginTop="@dimen/text_small"
                 android:textColor="@color/color_white"/>
 
@@ -109,7 +111,6 @@
             android:id="@+id/lv_produk"
             android:paddingLeft="@dimen/margin_default"
             android:paddingRight="@dimen/margin_default"
-            android:paddingBottom="@dimen/margin_default"
             android:divider="@null"
             android:layout_above="@id/ll_footer"
             android:layout_below="@id/ll_header"
