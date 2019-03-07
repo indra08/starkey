@@ -60,7 +60,7 @@
                 android:layout_weight="0.9"
                 android:background="@android:color/transparent"
                 android:ems="10"
-                android:hint="Apa yang ingi anda cari ?"
+                android:hint="Apa yang ingin anda cari ?"
                 android:inputType="textPersonName"
                 android:imeOptions="actionSearch"
                 android:padding="@dimen/margin_default"

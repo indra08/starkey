@@ -23,6 +23,8 @@ import java.io.InputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
 
+import id.starkey.pelanggan.R;
+
 /**
  * Created by Shin on 3/20/2017.
  */
@@ -79,7 +81,7 @@ public class ImageUtils {
     // General Image
     public void LoadRealImage(Context context, String uri, final ImageView image){
 
-        Picasso.with(context).load(Uri.parse(uri)).into(image);
+        Picasso.with(context).load(Uri.parse(uri)).error(R.drawable.kunci).into(image);
     }
 
     public void LoadRealImage(Context context, String uri, final ImageView image, int thumb){

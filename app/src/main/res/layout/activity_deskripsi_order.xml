@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:fab="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -15,30 +16,283 @@
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:layout_weight="0.4">
+            android:layout_weight="0.45">
 
-            <com.google.android.gms.maps.MapView
+            <fragment
+                android:id="@+id/place_autocomplete"
+                android:layout_width="match_parent"
+                android:layout_height="45dp"
+                android:name="com.google.android.gms.location.places.ui.PlaceAutocompleteFragment"/>
+
+            <RelativeLayout
+                android:layout_below="@+id/place_autocomplete"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:id="@+id/mv_proses">
+                android:layout_above="@+id/btnLanjutkan">
 
-            </com.google.android.gms.maps.MapView>
+                <fragment
+                    android:id="@+id/map"
+                    android:name="com.google.android.gms.maps.MapFragment"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"/>
+
+                <ProgressBar
+                    android:id="@+id/pb"
+                    style="?android:attr/progressBarStyleHorizontal"
+                    android:layout_width="match_parent"
+                    android:indeterminate="true"
+                    android:layout_height="10dp"
+                    android:indeterminateTint="@color/colorMerah"
+                    android:indeterminateTintMode="src_in"/>
+
+                <View
+                    android:id="@+id/lineCenter"
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_centerVertical="true"/>
+
+                <ImageView
+                    android:id="@+id/markerCenter"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:layout_above="@id/lineCenter"
+                    android:layout_centerHorizontal="true"/>
+
+                />
+
+            </RelativeLayout>
+
+            <!-- START et detail coordinate -->
+            <LinearLayout
+                android:id="@+id/Alamat"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentStart="true"
+                android:layout_alignParentTop="true"
+                android:background="@color/colorPutih">
+
+                <ImageView
+                    android:id="@+id/markerTop"
+                    android:layout_width="45dp"
+                    android:layout_height="45dp"
+                    android:padding="15dp"/>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:gravity="center"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:id="@+id/txtNama"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text=""
+                        android:maxLines="1"
+                        android:lines="1"
+                        android:textSize="10sp"
+                        android:textColor="@color/colorHitam" />
+
+                    <TextView
+                        android:id="@+id/txtDetail"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text=""
+                        android:maxLines="2"
+                        android:lines="2"
+                        android:textSize="10sp"
+                        android:textColor="@color/colorAbuAbu" />
+                </LinearLayout>
+            </LinearLayout>
+
         </RelativeLayout>
 
-        <ScrollView
+        <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:layout_weight="0.6"
-            android:scrollbars="none">
+            android:layout_weight="0.55"
+            android:layout_margin="@dimen/margin_pas">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Deskripsi Order"
+                android:id="@+id/tv_title"
+                android:textColor="@color/black"/>
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="vertical">
+                android:orientation="vertical"
+                android:id="@+id/ll_footer"
+                android:padding="@dimen/margin_default"
+                android:layout_alignParentBottom="true">
 
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Subtotal"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/text_small"/>
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text=""
+                    android:id="@+id/tv_subtotal"
+                    android:layout_marginTop="@dimen/margin_small"
+                    android:textColor="@color/color_gb"
+                    android:gravity="right"
+                    android:textSize="@dimen/text_default"/>
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Biaya Jemput"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/text_small"/>
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text=""
+                    android:id="@+id/tv_biaya_jemput"
+                    android:layout_marginTop="@dimen/margin_small"
+                    android:textColor="@color/color_gb"
+                    android:gravity="right"
+                    android:textSize="@dimen/text_default"/>
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Total"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/text_small"/>
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text=""
+                    android:id="@+id/tv_total"
+                    android:layout_marginTop="@dimen/margin_small"
+                    android:textColor="@color/color_gb"
+                    android:gravity="right"
+                    android:textSize="@dimen/text_default"/>
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Status"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/text_small"/>
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Baru"
+                    android:id="@+id/tv_status"
+                    android:layout_marginTop="@dimen/margin_small"
+                    android:textColor="@color/color_gb"
+                    android:gravity="right"
+                    android:textSize="@dimen/text_default"/>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:weightSum="2">
+
+                    <Button
+                        android:layout_width="0dp"
+                        android:layout_weight="1"
+                        android:layout_height="wrap_content"
+                        android:minHeight="45dp"
+                        android:backgroundTint="@color/btn_reverse"
+                        android:text="Batal"
+                        android:id="@+id/btn_batal"
+                        android:layout_marginTop="@dimen/margin_small"
+                        android:textColor="@color/color_white"/>
+
+                    <Button
+                        android:layout_width="0dp"
+                        android:layout_weight="1"
+                        android:layout_height="wrap_content"
+                        android:minHeight="45dp"
+                        android:backgroundTint="@color/btn_default"
+                        android:text="Order"
+                        android:id="@+id/btn_order"
+                        android:layout_marginTop="@dimen/margin_small"
+                        android:textColor="@color/color_white"/>
+                </LinearLayout>
 
             </LinearLayout>
-        </ScrollView>
+
+            <ListView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:id="@+id/lv_order"
+                android:layout_below="@id/tv_title"
+                android:layout_above="@id/ll_footer"
+                android:layout_marginTop="@dimen/margin_small"
+                android:layout_marginBottom="@dimen/margin_small"></ListView>
+
+            <com.github.clans.fab.FloatingActionMenu
+                android:id="@+id/material_design_android_floating_action_menu"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentTop="true"
+                android:layout_alignParentRight="true"
+                android:visibility="gone"
+                android:layout_marginLeft="11dp"
+                android:layout_marginRight="11dp"
+                fab:menu_animationDelayPerItem="55"
+                fab:menu_backgroundColor="@android:color/transparent"
+                fab:menu_buttonSpacing="0dp"
+                fab:menu_colorNormal="#da3c2f"
+                fab:menu_colorPressed="#dc4b3f"
+                fab:menu_colorRipple="#99d4d4d4"
+                fab:menu_fab_label="Hubungi Mitra"
+                fab:menu_fab_size="normal"
+                fab:menu_icon="@mipmap/ic_contact"
+                fab:menu_labels_colorNormal="#333"
+                fab:menu_labels_colorPressed="#444"
+                fab:menu_labels_colorRipple="#66efecec"
+                fab:menu_labels_cornerRadius="3dp"
+                fab:menu_labels_ellipsize="none"
+                fab:menu_labels_hideAnimation="@anim/fab_slide_out_to_right"
+                fab:menu_labels_margin="0dp"
+                fab:menu_labels_maxLines="-1"
+                fab:menu_labels_position="left"
+                fab:menu_labels_showAnimation="@anim/fab_slide_in_from_right"
+                fab:menu_labels_showShadow="true"
+                fab:menu_labels_singleLine="false"
+                fab:menu_labels_textColor="#f2f1f1"
+                fab:menu_labels_textSize="15sp"
+                fab:menu_openDirection="down"
+                fab:menu_shadowColor="#66aff198"
+                fab:menu_shadowRadius="4dp"
+                fab:menu_shadowXOffset="1dp"
+                fab:menu_shadowYOffset="4dp"
+                fab:menu_showShadow="true">
+
+                <com.github.clans.fab.FloatingActionButton
+                    android:id="@+id/material_design_floating_action_menu_item1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@mipmap/ic_message"
+                    fab:fab_label="Message"
+                    fab:fab_size="mini" />
+
+                <com.github.clans.fab.FloatingActionButton
+                    android:id="@+id/material_design_floating_action_menu_item2"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@mipmap/ic_sphone"
+                    fab:fab_label="Phone"
+                    fab:fab_size="mini" />
+            </com.github.clans.fab.FloatingActionMenu>
+        </RelativeLayout>
 
     </LinearLayout>
 

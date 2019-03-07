@@ -8,6 +8,7 @@ package id.starkey.pelanggan.Utilities;
 public class CustomItem {
 
     private String item1, item2, item3, item4, item5, item6, item7, item8, item9, item10, item11, item12, item13, item14, item15, item16;
+    private Boolean bool1;
 
     public CustomItem(String item1){
         this.item1 = item1;
@@ -29,6 +30,14 @@ public class CustomItem {
         this.item2 = item2;
         this.item3 = item3;
         this.item4 = item4;
+    }
+
+    public CustomItem(String item1, String item2, String item3, String item4, boolean bool1) {
+        this.item1 = item1;
+        this.item2 = item2;
+        this.item3 = item3;
+        this.item4 = item4;
+        this.bool1 = bool1;
     }
 
     public CustomItem(String item1, String item2, String item3, String item4, String item5) {
@@ -257,5 +266,13 @@ public class CustomItem {
 
     public void setItem16(String item16) {
         this.item16 = item16;
+    }
+
+    public Boolean getBool1() {
+        return bool1;
+    }
+
+    public void setBool1(Boolean bool1) {
+        this.bool1 = bool1;
     }
 }

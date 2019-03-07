@@ -262,6 +262,8 @@ m.setPosition(new LatLng(50,5));
         } else {
             Location location = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
 
+            if(location == null) location = locationManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
+
             if (location != null) {
                 map.clear();
                 double latti = location.getLatitude();
@@ -445,16 +447,18 @@ m.setPosition(new LatLng(50,5));
             map.clear();
             //Toast.makeText(this, "Jaringan atau GPS anda lemah", Toast.LENGTH_SHORT).show();
             Location locationNet = locationManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
-            double latNet = locationNet.getLatitude();
-            double lngNet = locationNet.getLongitude();
+            if(locationNet != null){
 
-            //LatLng myPos = new LatLng(latNet, lngNet);
-            //MarkerOptions markerOptions = new MarkerOptions().position(myPos);
-            //Marker marker = map.addMarker(markerOptions);
-            //markerOptions.position(myPos);
-            //marker.setPosition(myPos);
-            getDescLoc(latNet, lngNet);
+                double latNet = locationNet.getLatitude();
+                double lngNet = locationNet.getLongitude();
 
+                //LatLng myPos = new LatLng(latNet, lngNet);
+                //MarkerOptions markerOptions = new MarkerOptions().position(myPos);
+                //Marker marker = map.addMarker(markerOptions);
+                //markerOptions.position(myPos);
+                //marker.setPosition(myPos);
+                getDescLoc(latNet, lngNet);
+            }
             //Toast.makeText(this, "Kondisi NETWORK Provider", Toast.LENGTH_SHORT).show();
 
         }

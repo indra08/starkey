@@ -333,21 +333,6 @@
                 android:layout_below="@+id/cardViewRatingLive"
                 android:background="@drawable/background_button"/>
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
         </RelativeLayout>
 
 

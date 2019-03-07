@@ -60,7 +60,7 @@
                 android:layout_weight="0.9"
                 android:background="@android:color/transparent"
                 android:ems="10"
-                android:hint="Apa yang ingi anda cari ?"
+                android:hint="Apa yang ingin anda cari ?"
                 android:inputType="textPersonName"
                 android:imeOptions="actionSearch"
                 android:padding="@dimen/margin_default"
@@ -73,13 +73,13 @@
             android:layout_height="wrap_content"
             android:orientation="vertical"
             android:id="@+id/ll_footer"
-            android:padding="@dimen/margin_small"
+            android:padding="@dimen/margin_default"
             android:layout_alignParentBottom="true">
 
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Total (Belum termasuk ongkos kirim)"
+                android:text="Total (belum termasuk biaya jemput)"
                 android:textColor="@color/black"
                 android:textSize="@dimen/text_small"/>
 
@@ -91,7 +91,7 @@
                 android:layout_marginTop="@dimen/margin_small"
                 android:textColor="@color/color_gb"
                 android:gravity="right"
-                android:textSize="@dimen/text_default"/>
+                android:textSize="@dimen/text_super"/>
 
             <Button
                 android:layout_width="match_parent"
@@ -100,7 +100,7 @@
                 android:backgroundTint="@color/btn_default"
                 android:text="Order"
                 android:id="@+id/btn_order"
-                android:layout_marginTop="@dimen/text_small"
+                android:layout_marginTop="@dimen/margin_default"
                 android:textColor="@color/color_white"/>
 
         </LinearLayout>

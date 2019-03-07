@@ -29,6 +29,7 @@
     <color name="color_white2">#f12020</color>
     <color name="color_black">#000000</color>
     <color name="color_blue">#24a9e7</color>
+    <color name="color_blue1">#0191D5</color>
     <color name="color_background">#f2f2f2</color>
     <color name="color_gb">#0BB172</color>
 </resources>

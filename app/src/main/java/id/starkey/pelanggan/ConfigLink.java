@@ -7,6 +7,7 @@ package id.starkey.pelanggan;
 public class ConfigLink {
 
     private static String base_url = "https://api.starkey.id";
+    private static String base_url_v1 = "http://admin.starkey.id/";
 
     //REST API
     //REGISTRATION
@@ -106,5 +107,12 @@ public class ConfigLink {
     public static final String getVersion = base_url + "/api/v1.2/update_versi";
     public static final String savePembatalanOrder = base_url + "/api/v1.2/pembatalan_order";
     public static final String getWACS = base_url + "/api/v1.2/wa_link";
+
+    // Jasa Lain
+    public static final String getKategoriJasaLain = base_url_v1 + "api-lain/Kategori/";
+    public static final String getTokoJasaLain = base_url_v1 + "api-lain/Toko/";
+    public static final String getprodukJasaLain = base_url_v1 + "api-lain/Produk/";
+    public static final String hitungOngkir = base_url_v1 + "api-lain/Transaksi/hitung_ongkir/";
+    public static final String saveOrderLain = base_url_v1 + "api-lain/Transaksi/create/";
 
 }

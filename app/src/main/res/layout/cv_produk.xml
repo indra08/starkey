@@ -53,6 +53,7 @@
                     android:backgroundTint="@color/black"
                     android:buttonTint="@color/black"
                     android:id="@+id/cb_item"
+                    android:gravity="top"
                     android:layout_height="wrap_content" />
             </LinearLayout>
 

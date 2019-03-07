@@ -16,12 +16,33 @@ import android.support.v7.widget.Toolbar;
 import android.view.Display;
 import android.view.MenuItem;
 import android.widget.RelativeLayout;
+import android.widget.Toast;
+
+import com.android.volley.AuthFailureError;
+import com.android.volley.DefaultRetryPolicy;
+import com.android.volley.NetworkError;
+import com.android.volley.ParseError;
+import com.android.volley.Request;
+import com.android.volley.Response;
+import com.android.volley.RetryPolicy;
+import com.android.volley.ServerError;
+import com.android.volley.TimeoutError;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.JsonObjectRequest;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
+import id.starkey.pelanggan.ConfigLink;
 import id.starkey.pelanggan.HomeMenuJasaLain.Adapter.KategoriJasaAdapter;
 import id.starkey.pelanggan.R;
+import id.starkey.pelanggan.RequestHandler;
 import id.starkey.pelanggan.Utilities.CustomItem;
 import id.starkey.pelanggan.Utilities.ItemValidation;
 import id.starkey.pelanggan.Utilities.SessionManager;
@@ -59,19 +80,83 @@ public class KategoriJasaLain extends AppCompatActivity {
         rvKategoriJasa = (RecyclerView) findViewById(R.id.rv_kategori);
         masterList = new ArrayList<>();
 
-        masterList.add(new CustomItem("1", "Laundry", "http://chittagongit.com//images/washing-machine-icon-png/washing-machine-icon-png-28.jpg"));
-        masterList.add(new CustomItem("2", "Barber", "https://png.pngtree.com/png_detail/20181009/cartoons-depicting-barber-png-clipart_2820272.png"));
-        masterList.add(new CustomItem("3", "Ledeng", "https://png2.kisspng.com/sh/700a271b19fc109bca35e353f5b99729/L0KzQYm3VcE1N6d3iZH0aYP2gLBuTfNwdaF6jNd7LYPydsXAggJmNZDzhNt3ZT32eLF3kPlvb154feRBaXPoPYbohsllaZc7SapvZkW7Poe5UMY6P2c7Sac7NkO1Q4q8WMExOmUziNDw/kisspng-computer-software-online-shopping-service-5af9daf618ff58.6206976615263239581024.png"));
+        HashMap<String, String> params = new HashMap<String, String>();
+        params.put("keyword","");
+        params.put("start", "");
+        params.put("count", "");
 
-        masterList.add(new CustomItem("2", "Barber", "https://png.pngtree.com/png_detail/20181009/cartoons-depicting-barber-png-clipart_2820272.png"));
-        masterList.add(new CustomItem("1", "Laundry", "http://chittagongit.com//images/washing-machine-icon-png/washing-machine-icon-png-28.jpg"));
-        masterList.add(new CustomItem("3", "Ledeng", "https://png2.kisspng.com/sh/700a271b19fc109bca35e353f5b99729/L0KzQYm3VcE1N6d3iZH0aYP2gLBuTfNwdaF6jNd7LYPydsXAggJmNZDzhNt3ZT32eLF3kPlvb154feRBaXPoPYbohsllaZc7SapvZkW7Poe5UMY6P2c7Sac7NkO1Q4q8WMExOmUziNDw/kisspng-computer-software-online-shopping-service-5af9daf618ff58.6206976615263239581024.png"));
+        JsonObjectRequest request_json = new JsonObjectRequest(Request.Method.POST,
+                ConfigLink.getKategoriJasaLain
+                , new JSONObject(params),
+                new Response.Listener<JSONObject>() {
+                    @Override
+                    public void onResponse(JSONObject response) {
 
-        masterList.add(new CustomItem("3", "Ledeng", "https://png2.kisspng.com/sh/700a271b19fc109bca35e353f5b99729/L0KzQYm3VcE1N6d3iZH0aYP2gLBuTfNwdaF6jNd7LYPydsXAggJmNZDzhNt3ZT32eLF3kPlvb154feRBaXPoPYbohsllaZc7SapvZkW7Poe5UMY6P2c7Sac7NkO1Q4q8WMExOmUziNDw/kisspng-computer-software-online-shopping-service-5af9daf618ff58.6206976615263239581024.png"));
-        masterList.add(new CustomItem("1", "Laundry", "http://chittagongit.com//images/washing-machine-icon-png/washing-machine-icon-png-28.jpg"));
-        masterList.add(new CustomItem("2", "Barber", "https://png.pngtree.com/png_detail/20181009/cartoons-depicting-barber-png-clipart_2820272.png"));
+                        String message = "Terjadi kesalahan saat memuat data, harap ulangi";
+                        masterList.clear();
+                        try {
+                            String status = response.getJSONObject("metadata").getString("status");
+                            message = response.getJSONObject("metadata").getString("message");
 
-        setKategoriAdapter();
+                            if (status.equals("200")){
+
+                                JSONArray ja = response.getJSONArray("response");
+                                for(int i = 0; i < ja.length(); i++){
+
+                                    JSONObject jo = ja.getJSONObject(i);
+                                    masterList.add(new CustomItem(
+                                            jo.getString("id")
+                                            ,jo.getString("kategori")
+                                            ,jo.getString("path") + jo.getString("image")));
+                                }
+                            }else{
+                                Toast.makeText(context, message, Toast.LENGTH_LONG).show();
+                            }
+
+                        }catch (JSONException ex){
+                            ex.printStackTrace();
+                            Toast.makeText(context, message, Toast.LENGTH_LONG).show();
+                        }
+
+                        setKategoriAdapter();
+                    }
+                }, new Response.ErrorListener() {
+
+            @Override
+            public void onErrorResponse(VolleyError error) {
+
+                setKategoriAdapter();
+                String message = null;
+                if (error instanceof NetworkError) {
+                    message = "Tidak ada koneksi Internet";
+                } else if (error instanceof ServerError) {
+                    message = "Server tidak ditemukan";
+                } else if (error instanceof AuthFailureError) {
+                    message = "Authentification Failed";
+                } else if (error instanceof ParseError) {
+                    message = "Parsing data Error";
+                } else if (error instanceof TimeoutError) {
+                    message = "Connection TimeOut";
+                }
+                Toast.makeText(getApplicationContext(),message, Toast.LENGTH_LONG).show();
+            }
+        }){
+
+            @Override
+            public Map<String, String> getHeaders() throws AuthFailureError {
+                Map<String, String> params = new HashMap<String, String>();
+                params.put("Client-Service", "starkey");
+                params.put("Auth-Key", "44b7eb3bbdccdfdaa202d5bfd3541458");
+                return params;
+            }
+        };
+
+        int socketTimeout = 30000; //30 detik
+        RetryPolicy policy = new DefaultRetryPolicy(socketTimeout,
+                DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
+                DefaultRetryPolicy.DEFAULT_BACKOFF_MULT);
+        request_json.setRetryPolicy(policy);
+        RequestHandler.getInstance(this).addToRequestQueue(request_json);
     }
 
     private void setKategoriAdapter(){

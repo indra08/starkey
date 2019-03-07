@@ -6,11 +6,13 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import java.util.List;
 
+import id.starkey.pelanggan.HomeMenuJasaLain.ProdukPerToko;
 import id.starkey.pelanggan.R;
 import id.starkey.pelanggan.Utilities.CustomItem;
 import id.starkey.pelanggan.Utilities.ImageUtils;
@@ -37,6 +39,11 @@ public class ListProdukAdapter extends ArrayAdapter {
         private ImageView ivIcon;
         private TextView tvItem1, tvItem2;
         private CheckBox cbItem;
+    }
+
+    public List<CustomItem> getItems(){
+
+        return this.items;
     }
 
     public void addMoreData(List<CustomItem> moreData){
@@ -70,11 +77,19 @@ public class ListProdukAdapter extends ArrayAdapter {
         final CustomItem itemSelected = items.get(position);
         holder.tvItem1.setText(itemSelected.getItem2());
         holder.tvItem2.setText("Harga : "+ iv.ChangeToCurrencyFormat(itemSelected.getItem3()));
+        holder.cbItem.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
+
+                items.get(position).setBool1(b);
+                ((ProdukPerToko) context).updateHarga();
+            }
+        });
 
         ImageUtils iu = new ImageUtils();
         iu.LoadRealImage(context, itemSelected.getItem4(), holder.ivIcon);
 
+        holder.cbItem.setChecked(itemSelected.getBool1());
         return convertView;
-
     }
 }
