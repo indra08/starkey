@@ -59,6 +59,7 @@ import id.starkey.pelanggan.Daftar.InputFotoActivity;
 import id.starkey.pelanggan.EditFotoProfile.EditFotoActivity;
 import id.starkey.pelanggan.History.HistoryActivity;
 import id.starkey.pelanggan.Home.FragmentHome;
+import id.starkey.pelanggan.HomeMenuJasaLain.TransaksiJasaLain;
 import id.starkey.pelanggan.Hubungi.HubungiActivity;
 import id.starkey.pelanggan.InfoTerbaru.InfoTerbaruActivity;
 import id.starkey.pelanggan.Kunci.ReviewKunci.ReviewKunciActivity;
@@ -876,6 +877,15 @@ public class MainActivity extends AppCompatActivity
                 //Toast.makeText(this, "History", Toast.LENGTH_SHORT).show();
                 Intent intent = new Intent(MainActivity.this, HistoryActivity.class);
                 startActivity(intent);
+                //fragment = new category();
+                //Intent i = new Intent(this, CategoryAllActivity.class);
+                //startActivity(i);
+                break;
+            case R.id.nav_transaksi_jl:
+                TAG_MENU = "TAG_HISTORY";
+                //Toast.makeText(this, "History", Toast.LENGTH_SHORT).show();
+                Intent intentJL = new Intent(MainActivity.this, TransaksiJasaLain.class);
+                startActivity(intentJL);
                 //fragment = new category();
                 //Intent i = new Intent(this, CategoryAllActivity.class);
                 //startActivity(i);

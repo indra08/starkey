@@ -34,7 +34,7 @@
                                           <PersistentState>
                                             <option name="values">
                                               <map>
-                                                <entry key="url" value="jar:file:/C:/Program%20Files/Android/Android%20Studio/plugins/android/lib/android.jar!/images/material_design_icons/action/ic_store_black_24dp.xml" />
+                                                <entry key="url" value="jar:file:/C:/Program%20Files/Android/Android%20Studio/plugins/android/lib/android.jar!/images/material_design_icons/action/ic_query_builder_black_24dp.xml" />
                                               </map>
                                             </option>
                                           </PersistentState>
@@ -56,9 +56,9 @@
                                   <option name="values">
                                     <map>
                                       <entry key="imageAsset" value="E:\Gmedia\AndroidProject\PSPReseller\app\src\main\res\drawable-xhdpi\ic_cs.png" />
-                                      <entry key="outputName" value="ic_store" />
+                                      <entry key="outputName" value="ic_transaksi_jl" />
                                       <entry key="theme" value="CUSTOM" />
-                                      <entry key="themeColor" value="474ab4" />
+                                      <entry key="themeColor" value="909090" />
                                     </map>
                                   </option>
                                 </PersistentState>
@@ -95,7 +95,7 @@
                                           <PersistentState>
                                             <option name="values">
                                               <map>
-                                                <entry key="color" value="1700ff" />
+                                                <entry key="color" value="e25a1b" />
                                               </map>
                                             </option>
                                           </PersistentState>
@@ -106,7 +106,7 @@
                                           <PersistentState>
                                             <option name="values">
                                               <map>
-                                                <entry key="url" value="jar:file:/C:/Program%20Files/Android/Android%20Studio/plugins/android/lib/android.jar!/images/material_design_icons/maps/ic_store_mall_directory_black_24dp.xml" />
+                                                <entry key="url" value="jar:file:/C:/Program%20Files/Android/Android%20Studio/plugins/android/lib/android.jar!/images/material_design_icons/device/ic_storage_black_24dp.xml" />
                                               </map>
                                             </option>
                                           </PersistentState>
@@ -130,7 +130,7 @@
                                       <entry key="backgroundColor" value="f0f633" />
                                       <entry key="iconShape" value="NONE" />
                                       <entry key="imageAsset" value="E:\Gmedia\AndroidProject\PSPReseller\app\src\main\res\drawable-xhdpi\ic_cs.png" />
-                                      <entry key="outputName" value="ic_store" />
+                                      <entry key="outputName" value="ic_status" />
                                     </map>
                                   </option>
                                 </PersistentState>

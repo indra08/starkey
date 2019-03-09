@@ -50,10 +50,19 @@
         android:roundIcon="@mipmap/ic_starkey_customer_curved"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".HomeMenuJasaLain.ReviewMitraJasaLain"
-            android:screenOrientation="portrait"></activity>
-        <activity android:name=".HomeMenuJasaLain.DeskripsiOrder"
-            android:screenOrientation="portrait"/>
+        <activity android:name=".HomeMenuJasaLain.TransaksiJasaLain"
+            android:screenOrientation="portrait">
+            <intent-filter>
+                <action android:name="ACT_MAIN" />
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:name=".HomeMenuJasaLain.ReviewMitraJasaLain"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".HomeMenuJasaLain.DeskripsiOrder"
+            android:screenOrientation="portrait" />
         <activity
             android:name=".HomeMenuJasaLain.ProdukPerToko"
             android:screenOrientation="portrait" />
