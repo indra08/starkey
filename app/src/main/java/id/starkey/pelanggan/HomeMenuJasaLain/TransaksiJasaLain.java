@@ -61,6 +61,7 @@ public class TransaksiJasaLain extends AppCompatActivity {
     private String idUser = "";
     private SessionManager session;
     private TabLayout tbStatus;
+    private JSONArray jStatus;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -98,6 +99,11 @@ public class TransaksiJasaLain extends AppCompatActivity {
         isLoading = false;
         start = 0;
         idUser = session.getID();
+        jStatus = new JSONArray();
+        jStatus.put("1");
+        jStatus.put("2");
+        jStatus.put("3");
+        jStatus.put("4");
 
         lvHistory.addFooterView(footerList);
         adapter = new ListHistoryJLAdapter((Activity) context, masterList);
@@ -135,6 +141,7 @@ public class TransaksiJasaLain extends AppCompatActivity {
                 CustomItem item = (CustomItem) adapterView.getItemAtPosition(i);
                 Intent intent = new Intent(context, ReviewMitraJasaLain.class);
                 intent.putExtra("id", item.getItem1());
+                intent.putExtra("status", item.getItem7());
                 startActivity(intent);
             }
         });
@@ -146,13 +153,23 @@ public class TransaksiJasaLain extends AppCompatActivity {
             @Override
             public void onTabSelected(TabLayout.Tab tab) {
 
+                //proses
                 if(tab.getPosition() == 0) {
 
+                    jStatus = new JSONArray();
+                    jStatus.put("1");
+                    jStatus.put("2");
+                    jStatus.put("3");
+                    jStatus.put("4");
                     start = 0;
                     getData();
                 }else if(tab.getPosition() == 1){
 
                     start = 0;
+                    jStatus = new JSONArray();
+                    jStatus.put("5");
+                    jStatus.put("6");
+                    jStatus.put("7");
                     getData();
                 }
             }
@@ -173,20 +190,26 @@ public class TransaksiJasaLain extends AppCompatActivity {
 
         isLoading = true;
         lvHistory.addFooterView(footerList);
-        HashMap<String, String> params = new HashMap<String, String>();
 
-        params.put("keyword","");
-        params.put("start", String.valueOf(start));
-        params.put("count", String.valueOf(count));
-        params.put("id", "");
-        params.put("id_toko", "");
-        params.put("id_user", "");
-        params.put("datestart", "");
-        params.put("dateend", "");
+        JSONObject jBody = new JSONObject();
+
+        try {
+            jBody.put("keyword","");
+            jBody.put("start", String.valueOf(start));
+            jBody.put("count", String.valueOf(count));
+            jBody.put("id", "");
+            jBody.put("id_toko", "");
+            jBody.put("id_user", idUser);
+            jBody.put("datestart", "");
+            jBody.put("dateend", "");
+            jBody.put("status", jStatus);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
 
         JsonObjectRequest request_json = new JsonObjectRequest(Request.Method.POST,
                 ConfigLink.getTransaksi
-                , new JSONObject(params),
+                , jBody,
                 new Response.Listener<JSONObject>() {
                     @Override
                     public void onResponse(JSONObject response) {
@@ -211,8 +234,9 @@ public class TransaksiJasaLain extends AppCompatActivity {
                                             ,jo.getString("insert_at")
                                             ,jo.getString("nama_toko")
                                             ,jo.getString("total")
-                                            ,jo.getString("latitude")
+                                            ,iv.parseNullString(jo.getString("state"))
                                             ,jo.getString("keterangan")
+                                            ,jo.getString("status")
                                     ));
                                 }
                             }else{

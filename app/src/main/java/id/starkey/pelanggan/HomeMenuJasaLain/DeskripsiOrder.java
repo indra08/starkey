@@ -346,6 +346,7 @@ public class DeskripsiOrder extends AppCompatActivity implements
             jBody.put("id_user", idUser);
             jBody.put("id_toko", idToko);
             jBody.put("username", phoneUser);
+            jBody.put("state", detAlamat);
             jBody.put("latitude", currentLatitude);
             jBody.put("longitude", currentLongitude);
             jBody.put("produk", jProduk);
