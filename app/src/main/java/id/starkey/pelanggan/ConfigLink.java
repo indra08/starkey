@@ -116,5 +116,6 @@ public class ConfigLink {
     public static final String saveOrderLain = base_url_v1 + "api-lain/Transaksi/create/";
     public static final String getTransaksi = base_url_v1 + "api-lain/Transaksi/view_order/";
     public static final String saveReview = base_url_v1 + "api-lain/Transaksi/review_order/";
+    public static final String updateStatusTransaksi = base_url_v1 + "api-lain/Transaksi/update_status/";
 
 }

@@ -1,6 +1,7 @@
 package id.starkey.pelanggan.Firebase;
 
 import android.app.AlertDialog;
+import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Context;
@@ -8,6 +9,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.media.RingtoneManager;
 import android.net.Uri;
+import android.os.Build;
 import android.support.v4.app.NotificationCompat;
 import android.util.Log;
 import android.widget.Toast;
@@ -60,85 +62,98 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
             }
 
 
-            String statusMessage = remoteMessage.getData().get("statusMessage");
-            Log.d("statusMessageFb", statusMessage);
-            if (statusMessage.equals("transaction_accepted")){
-                //open activity
-                Intent intentTrx = new Intent(MyFirebaseMessagingService.this, TrxKunciActivity.class);
-                String detailMitra = remoteMessage.getData().get("transaction");
-                intentTrx.putExtra("message", detailMitra);
-                //intentTrx.addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
-                intentTrx.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                startActivity(intentTrx);
-                WaitingKunciActivity.getInstance().finishAffinity();
-            } else if (statusMessage.equals("transaction_cancelled")){
-                Intent intentMain = new Intent(MyFirebaseMessagingService.this, MainActivity.class);
-                //intentMain.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                intentMain.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                startActivity(intentMain);
-                //WaitingKunciActivity.getInstance().finish();
-                //Toast.makeText(this, "Mitra telah membatalkan pesanan, harap order kembali", Toast.LENGTH_SHORT).show();
-                MainActivity.isBatalByMitra = true;
-                TrxKunciActivity.mitraState = 9;
-                TrxKunciActivity.getInstance().finish();
-            } else if (statusMessage.equals("transaction_failed_mitra_not_found")){//tidak ada mitra yang ambil orderan kunci
-                WaitingKunciActivity.getInstance().finish();
-
-            } else if (statusMessage.equals("stempel_transaction_failed_mitra_not_found")){// tidak ada mitra yang ambil orderan stempel
-                WaitingStempelActivity.getInstance().finish();
-            } else if (statusMessage.equals("stempel_transaction_accepted")){ // request diterima mitra stempel
-                Intent intentTrxStempel = new Intent(MyFirebaseMessagingService.this, TrxStempelActivity.class);
-                String detailMitra = remoteMessage.getData().get("transaction");
-                intentTrxStempel.putExtra("messageStempel", detailMitra);
-                intentTrxStempel.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                startActivity(intentTrxStempel);
-                WaitingStempelActivity.getInstance().finishAffinity();
-
-            } else if (statusMessage.equals("stempel_transaction_cancelled")){//trx stempel cancelled by mitra
-                Intent toMain = new Intent(MyFirebaseMessagingService.this, MainActivity.class);
-                toMain.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                startActivity(toMain);
-                TrxStempelActivity.mitraState = 9;
-                TrxStempelActivity.getInstance().finish();
-
-            } else if (statusMessage.equals("stempel_transaction_finish")){//request trx stempel finish
-                //Intent toMain = new Intent(MyFirebaseMessagingService.this, MainActivity.class);
-                Intent toMain = new Intent(MyFirebaseMessagingService.this, LiveRattingActivity.class);
-                String payloadstemp = remoteMessage.getData().get("transaction");
-                Log.d("payloadstempelselesai", payloadstemp);
-                toMain.putExtra("payloadtransaksiselesai", payloadstemp);
-                toMain.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                startActivity(toMain);
-                TrxStempelActivity.getInstance().finish();
-
-            } else {//request trx kunci finish
-                //Intent intentMain = new Intent(MyFirebaseMessagingService.this, MainActivity.class);
-                //intentMain.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                Intent intentMain = new Intent(MyFirebaseMessagingService.this, LiveRattingActivity.class);
-                String payload = remoteMessage.getData().get("transaction");
-                Log.d("payloadkunciselesai", payload);
-                intentMain.putExtra("payloadtransaksiselesai", payload);
-                intentMain.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                startActivity(intentMain);
-                //WaitingKunciActivity.getInstance().finish();
-                TrxKunciActivity.getInstance().finish();
+            String status = "";
+            try {
+                status = remoteMessage.getData().get("Jenis");
+            }catch (Exception e){
+                status = "";
+                e.printStackTrace();
             }
 
+            if(status != null){
 
+                sendNotification("", remoteMessage.getNotification().getBody());
+            }else{
+                String statusMessage = remoteMessage.getData().get("statusMessage");
+                Log.d("statusMessageFb", statusMessage);
+                if (statusMessage.equals("transaction_accepted")){
+                    //open activity
+                    Intent intentTrx = new Intent(MyFirebaseMessagingService.this, TrxKunciActivity.class);
+                    String detailMitra = remoteMessage.getData().get("transaction");
+                    intentTrx.putExtra("message", detailMitra);
+                    //intentTrx.addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
+                    intentTrx.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                    startActivity(intentTrx);
+                    WaitingKunciActivity.getInstance().finishAffinity();
+                } else if (statusMessage.equals("transaction_cancelled")){
+                    Intent intentMain = new Intent(MyFirebaseMessagingService.this, MainActivity.class);
+                    //intentMain.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                    intentMain.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                    startActivity(intentMain);
+                    //WaitingKunciActivity.getInstance().finish();
+                    //Toast.makeText(this, "Mitra telah membatalkan pesanan, harap order kembali", Toast.LENGTH_SHORT).show();
+                    MainActivity.isBatalByMitra = true;
+                    TrxKunciActivity.mitraState = 9;
+                    TrxKunciActivity.getInstance().finish();
+                } else if (statusMessage.equals("transaction_failed_mitra_not_found")){//tidak ada mitra yang ambil orderan kunci
+                    WaitingKunciActivity.getInstance().finish();
+
+                } else if (statusMessage.equals("stempel_transaction_failed_mitra_not_found")){// tidak ada mitra yang ambil orderan stempel
+                    WaitingStempelActivity.getInstance().finish();
+                } else if (statusMessage.equals("stempel_transaction_accepted")){ // request diterima mitra stempel
+                    Intent intentTrxStempel = new Intent(MyFirebaseMessagingService.this, TrxStempelActivity.class);
+                    String detailMitra = remoteMessage.getData().get("transaction");
+                    intentTrxStempel.putExtra("messageStempel", detailMitra);
+                    intentTrxStempel.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                    startActivity(intentTrxStempel);
+                    WaitingStempelActivity.getInstance().finishAffinity();
+
+                } else if (statusMessage.equals("stempel_transaction_cancelled")){//trx stempel cancelled by mitra
+                    Intent toMain = new Intent(MyFirebaseMessagingService.this, MainActivity.class);
+                    toMain.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                    startActivity(toMain);
+                    TrxStempelActivity.mitraState = 9;
+                    TrxStempelActivity.getInstance().finish();
+
+                } else if (statusMessage.equals("stempel_transaction_finish")){//request trx stempel finish
+                    //Intent toMain = new Intent(MyFirebaseMessagingService.this, MainActivity.class);
+                    Intent toMain = new Intent(MyFirebaseMessagingService.this, LiveRattingActivity.class);
+                    String payloadstemp = remoteMessage.getData().get("transaction");
+                    Log.d("payloadstempelselesai", payloadstemp);
+                    toMain.putExtra("payloadtransaksiselesai", payloadstemp);
+                    toMain.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                    startActivity(toMain);
+                    TrxStempelActivity.getInstance().finish();
+
+                } else {//request trx kunci finish
+                    //Intent intentMain = new Intent(MyFirebaseMessagingService.this, MainActivity.class);
+                    //intentMain.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                    Intent intentMain = new Intent(MyFirebaseMessagingService.this, LiveRattingActivity.class);
+                    String payload = remoteMessage.getData().get("transaction");
+                    Log.d("payloadkunciselesai", payload);
+                    intentMain.putExtra("payloadtransaksiselesai", payload);
+                    intentMain.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                    startActivity(intentMain);
+                    //WaitingKunciActivity.getInstance().finish();
+                    TrxKunciActivity.getInstance().finish();
+                }
+
+                try {
+                    String stringify = remoteMessage.getData().get("notification");
+                    jsonObjectNotif = new JSONObject(stringify);
+                    sTitleNotif = jsonObjectNotif.getString("title");
+                    sBodyNotif = jsonObjectNotif.getString("body");
+                    //Log.d("bodynya", sBodyNotif);
+                } catch (JSONException ex){
+
+                }
+                sendNotification(remoteMessage.getFrom(), sBodyNotif);
+            }
         }
         // Also if you intend on generating your own notifications as a result of a received FCM
         // message, here is where that should be initiated. See sendNotification method below.
         //notifyUser(remoteMessage.getFrom(), remoteMessage.getNotification().getBody());
-        try {
-            String stringify = remoteMessage.getData().get("notification");
-            jsonObjectNotif = new JSONObject(stringify);
-            sTitleNotif = jsonObjectNotif.getString("title");
-            sBodyNotif = jsonObjectNotif.getString("body");
-            //Log.d("bodynya", sBodyNotif);
-        } catch (JSONException ex){
 
-        }
-        sendNotification(remoteMessage.getFrom(), sBodyNotif);
     }
 
     private void sendNotification (String from, String notification){
@@ -162,6 +177,14 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
 
         NotificationManager notificationManager =
                 (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            String channelId = "USER_CHANNEL_ID";
+            NotificationChannel channel = new NotificationChannel(channelId,
+                    "Order User",
+                    NotificationManager.IMPORTANCE_DEFAULT);
+            notificationManager.createNotificationChannel(channel);
+            notificationBuilder.setChannelId(channelId);
+        }
 
         notificationManager.notify(0, notificationBuilder.build());
     }

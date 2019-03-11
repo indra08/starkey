@@ -372,6 +372,7 @@ public class DeskripsiOrder extends AppCompatActivity implements
 
                             if (status.equals("200")){
 
+                                MainActivity.isOrderLain = true;
                                 Intent intent = new Intent(context, MainActivity.class);
                                 intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                                 startActivity(intent);

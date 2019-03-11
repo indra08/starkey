@@ -63,11 +63,12 @@ public class ReviewMitraJasaLain extends AppCompatActivity {
     private ListOrderJLAdapter adapter;
     private MaterialRatingBar rbMitra;
     private EditText edtKomentar;
-    private Button btnSimpan;
+    private Button btnSimpan, btnBatal;
     private String idOrder = "", statusOrder = "";
     private String idToko = "";
     private CardView cvRating;
     private CircularImageView ciMitra;
+    private String currentStatus = "";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -107,6 +108,7 @@ public class ReviewMitraJasaLain extends AppCompatActivity {
         rbMitra = (MaterialRatingBar) findViewById(R.id.rb_mitra);
         edtKomentar = (EditText) findViewById(R.id.edt_komentar);
         btnSimpan = (Button) findViewById(R.id.btn_simpan);
+        btnBatal = (Button) findViewById(R.id.btn_batal);
         cvRating = (CardView) findViewById(R.id.cardViewRatingLive);
         ciMitra = (CircularImageView) findViewById(R.id.imageViewMitra);
 
@@ -135,7 +137,7 @@ public class ReviewMitraJasaLain extends AppCompatActivity {
 
                 AlertDialog dialog = new AlertDialog.Builder(context)
                         .setTitle("Konfirmasi")
-                        .setMessage("Anda yakin ingin myimpan reivew ?")
+                        .setMessage("Anda yakin ingin menyimpan reivew ?")
                         .setPositiveButton("Ya", new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialogInterface, int i) {
@@ -152,6 +154,118 @@ public class ReviewMitraJasaLain extends AppCompatActivity {
                         .show();
             }
         });
+
+        btnBatal.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                AlertDialog dialog = new AlertDialog.Builder(context)
+                        .setTitle("Konfirmasi")
+                        .setMessage("Anda yakin ingin membatalkan order ?")
+                        .setPositiveButton("Ya", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialogInterface, int i) {
+
+                                batalTransaksi();
+                            }
+                        })
+                        .setNegativeButton("Tidak", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialogInterface, int i) {
+
+                            }
+                        })
+                        .show();
+            }
+        });
+    }
+
+    private void batalTransaksi(){
+
+        final ProgressDialog loading = new ProgressDialog(this);
+        loading.setMessage("Menyimpan data...");
+        loading.setCancelable(false);
+        loading.show();
+
+        JSONObject jBody = new JSONObject();
+
+        try {
+            jBody.put("id", idOrder);
+            jBody.put("status", "6");
+            jBody.put("id_mitra", "");
+            jBody.put("flag", "U");
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+        JsonObjectRequest request_json = new JsonObjectRequest(Request.Method.POST,
+                ConfigLink.updateStatusTransaksi
+                , jBody,
+                new Response.Listener<JSONObject>() {
+                    @Override
+                    public void onResponse(JSONObject response) {
+
+                        loading.dismiss();
+                        String message = "Terjadi kesalahan saat memuat data, harap ulangi";
+
+                        try {
+
+                            String status = response.getJSONObject("metadata").getString("status");
+                            message = response.getJSONObject("metadata").getString("message");
+                            Toast.makeText(context, message, Toast.LENGTH_LONG).show();
+
+                            if (status.equals("200")){
+
+                                MainActivity.isOrderLain = true;
+                                Intent intent = new Intent(context, MainActivity.class);
+                                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                                startActivity(intent);
+                                finish();
+                            }
+
+                        }catch (JSONException ex){
+                            ex.printStackTrace();
+                            Toast.makeText(context, message, Toast.LENGTH_LONG).show();
+                        }
+
+                    }
+                }, new Response.ErrorListener() {
+
+            @Override
+            public void onErrorResponse(VolleyError error) {
+
+                loading.dismiss();
+                String message = null;
+                if (error instanceof NetworkError) {
+                    message = "Tidak ada koneksi Internet";
+                } else if (error instanceof ServerError) {
+                    message = "Server tidak ditemukan";
+                } else if (error instanceof AuthFailureError) {
+                    message = "Authentification Failed";
+                } else if (error instanceof ParseError) {
+                    message = "Parsing data Error";
+                } else if (error instanceof TimeoutError) {
+                    message = "Connection TimeOut";
+                }
+                Toast.makeText(getApplicationContext(),message, Toast.LENGTH_LONG).show();
+            }
+        }){
+
+            @Override
+            public Map<String, String> getHeaders() throws AuthFailureError {
+                Map<String, String> params = new HashMap<String, String>();
+                params.put("Client-Service", "starkey");
+                params.put("Auth-Key", "44b7eb3bbdccdfdaa202d5bfd3541458");
+                return params;
+            }
+        };
+
+        int socketTimeout = 30000; //30 detik
+        RetryPolicy policy = new DefaultRetryPolicy(socketTimeout,
+                DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
+                DefaultRetryPolicy.DEFAULT_BACKOFF_MULT);
+        request_json.setRetryPolicy(policy);
+        RequestHandler.getInstance(this).addToRequestQueue(request_json);
     }
 
     private void saveData() {
@@ -190,6 +304,7 @@ public class ReviewMitraJasaLain extends AppCompatActivity {
 
                             if (status.equals("200")){
 
+                                MainActivity.isOrderLain = true;
                                 Intent intent = new Intent(context, MainActivity.class);
                                 intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                                 startActivity(intent);
@@ -243,7 +358,6 @@ public class ReviewMitraJasaLain extends AppCompatActivity {
 
     private void initData() {
 
-
         HashMap<String, String> params = new HashMap<String, String>();
 
         params.put("id", idOrder);
@@ -274,11 +388,19 @@ public class ReviewMitraJasaLain extends AppCompatActivity {
                                             .into(ciMitra);
                                 }
                                 //tvMitra.setText(jHeader.getString(""));
+                                currentStatus = jHeader.getString("status");
+
+                                //jika baru atau diterima
+                                if(currentStatus.equals("1") || currentStatus.equals("2")){
+
+                                    btnBatal.setVisibility(View.VISIBLE);
+                                }else{
+                                    btnBatal.setVisibility(View.GONE);
+                                }
                                 tvToko.setText(jHeader.getString("nama_toko"));
                                 tvAlamat.setText(jHeader.getString("state"));
                                 tvSubtotal.setText(iv.ChangeToCurrencyFormat(jHeader.getString("subtotal")));
-                                tvBiayaJemput.setText(iv.ChangeToCurrencyFormat(jHeader.getString("subtotal")));
-                                tvSubtotal.setText(iv.ChangeToCurrencyFormat(jHeader.getString("total_ongkir")));
+                                tvBiayaJemput.setText(iv.ChangeToCurrencyFormat(jHeader.getString("total_ongkir")));
                                 tvTotal.setText(iv.ChangeToCurrencyFormat(jHeader.getString("total")));
 
                                 // Detail

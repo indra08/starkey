@@ -210,7 +210,7 @@ public class TokoPerKategori extends AppCompatActivity {
                                             ,jo.getString("nama")
                                             ,jo.getString("alamat")
                                             ,jo.getString("telpon")
-                                            ,jo.getString("image")
+                                            ,jo.getString("fullpath")
                                             ,jo.getString("latitude")
                                             ,jo.getString("longitude")
                                     ));

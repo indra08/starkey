@@ -127,6 +127,7 @@ public class MainActivity extends AppCompatActivity
     private AlertDialog builderVersion;
     private boolean updateRequired = false;
     public static boolean isBatalByMitra = false;
+    public static boolean isOrderLain = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -468,6 +469,12 @@ public class MainActivity extends AppCompatActivity
                         }
                     })
                     .show();
+        }
+
+        if(isOrderLain){
+            isOrderLain = false;
+            Intent intentJL = new Intent(MainActivity.this, TransaksiJasaLain.class);
+            startActivity(intentJL);
         }
     }
 

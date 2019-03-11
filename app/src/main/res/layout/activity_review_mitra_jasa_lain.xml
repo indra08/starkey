@@ -333,6 +333,16 @@
                 android:text="Simpan"
                 android:visibility="gone"/>
 
+            <Button
+                android:id="@+id/btn_batal"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/cardViewRatingLive"
+                android:background="@drawable/btn_red"
+                android:textColor="@color/color_white"
+                android:text="Batalkan Order"
+                android:visibility="gone"/>
+
         </RelativeLayout>
     </ScrollView>
 </RelativeLayout>
