@@ -403,6 +403,13 @@ public class ReviewMitraJasaLain extends AppCompatActivity {
                                 tvBiayaJemput.setText(iv.ChangeToCurrencyFormat(jHeader.getString("total_ongkir")));
                                 tvTotal.setText(iv.ChangeToCurrencyFormat(jHeader.getString("total")));
 
+                                if(!jHeader.getString("is_rating").equals("0")){
+
+                                    btnSimpan.setVisibility(View.GONE);
+                                    cvRating.setVisibility(View.GONE);
+                                    //rbMitra.setRating(iv.parseNullFloat(jHeader.getString("rating")));
+                                }
+
                                 // Detail
                                 JSONArray ja = response.getJSONObject("response").getJSONArray("detail");
                                 for(int i = 0; i < ja.length(); i++){
