@@ -480,14 +480,14 @@ public class FragmentHome extends Fragment implements View.OnClickListener, Loca
 
                                     Intent toTrxKunci = new Intent(mContext, TrxKunciActivity.class);
                                     toTrxKunci.putExtra("message", joData.toString());
-                                    startActivity(toTrxKunci);
+                                    ((Activity)mContext).startActivity(toTrxKunci);
                                     ((Activity)mContext).finish();
 
                                 } else if (kondisiidlayanan.equals("2")){//transaksi stempel
 
                                     Intent toTrxStempel = new Intent(mContext, TrxStempelActivity.class);
                                     toTrxStempel.putExtra("messageStempel", joData.toString());
-                                    startActivity(toTrxStempel);
+                                    ((Activity)mContext).startActivity(toTrxStempel);
                                     ((Activity)mContext).finish();
                                 }
 
